@@ -1,0 +1,35 @@
+.header{
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: flex-start;
+  gap: 40px;
+  margin-bottom: 40px;
+} 
+.sortWrap{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.icon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.boardsWrap{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+.board{
+  min-height: 50px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  color: #25306c;
+  font-weight: bold;
+  box-sizing: border-box;
+}

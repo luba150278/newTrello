@@ -1,0 +1,23 @@
+.wrapper {
+  background: var(--background);
+
+  /* background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%); */
+  color: var(--fontcolor);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  transition: all 0.5s ease-in-out;
+}
+
+.wrapper[data-attr="dark"] {
+  --background: #0b3b59;
+  --fontcolor: rgb(240 242 242 / 80%);
+  --link-color: #05dbf2;
+  --contrast-color-alt: #9498f2;
+  --contrast-color: #05dbf2;
+  --label: rgb(240 242 242 / 40%);
+  --button-tint: rgb(155 240 249 / 10%);
+  --light-tint: rgb(155 240 249 / 5%);
+  --projectTask: #07293e;
+  --projectFont: rgb(240 242 242 / 80%);
+}

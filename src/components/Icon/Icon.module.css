@@ -1,0 +1,8 @@
+.logoIcon {
+  cursor: pointer;
+}
+
+.logoIcon:hover {
+  color: red;
+  fill: blue;
+}
