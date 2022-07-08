@@ -1,0 +1,8 @@
+
+@import '../../index.css';
+.sort:hover{
+  color: var(--accent-color);
+}
+.sort.active{
+  color: var(--contrast-color);
+}

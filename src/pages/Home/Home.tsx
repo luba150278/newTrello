@@ -6,10 +6,11 @@ import Context from '../../context/Context';
 import { withLayout } from '../../layout/Layout';
 import Loader from '../../components/Loader/Loader';
 import Boards from './Boards/Boards';
+import LoginForm from '../../components/LoginForm/LoginForm';
 
 function Home(): JSX.Element {
   const { store } = useContext(Context);
-  const { boards } = store.boards;
+  const { boards } = store;
 
   if (store.isLoading) {
     return (
@@ -19,6 +20,9 @@ function Home(): JSX.Element {
     );
   }
 
+  if (!store.isAuth) {
+    return <LoginForm />;
+  }
   return (
     <section>
       <Container>{boards.length > 0 ? <Boards /> : <p>{NO_BOARDS}</p>}</Container>

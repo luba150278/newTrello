@@ -1,0 +1,27 @@
+.inputsGroup {
+  display: grid;
+  grid-template-rows: repeat(auto, 1fr);
+  grid-gap: 10px;
+  margin-top: 20px;
+}
+.wrapPass {
+  position: relative;
+  padding-top: 20px;
+  display: grid;
+  grid-auto-flow: row;
+  grid-gap: 10px;
+}
+.showPass {
+  position: absolute;
+  top: -5px;
+  right: 5px;
+  z-index: 100;
+}
+.secondPass {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hidden{
+  display: none;
+}

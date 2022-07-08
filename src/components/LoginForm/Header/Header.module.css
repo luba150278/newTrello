@@ -1,0 +1,6 @@
+.formHeader{
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+}

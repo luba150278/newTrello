@@ -1,4 +1,5 @@
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import { LayoutProps } from './Layout.props';
 import styles from './Layout.module.css';
 // import cn from "classnames";
@@ -11,6 +12,7 @@ function Layout({ children }: LayoutProps): JSX.Element {
       <Header />
       <div className={styles.body}>{children}</div>
       <Footer className={styles.footer} />
+      <ToastContainer />
     </div>
   );
 }

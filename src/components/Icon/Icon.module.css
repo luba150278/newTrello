@@ -1,8 +1,4 @@
-.logoIcon {
-  cursor: pointer;
-}
-
-.logoIcon:hover {
+.sort:hover {
   color: red;
   fill: blue;
 }

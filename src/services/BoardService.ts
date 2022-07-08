@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { AxiosResponse } from 'axios';
 import api from '../api/request';
 import config from '../common/constans/api';

@@ -1,40 +1,17 @@
 /* eslint-disable no-console */
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { AiOutlineSortAscending, AiOutlineSortDescending } from 'react-icons/ai';
-import Icon from '../../../components/Icon/Icon';
 import Context from '../../../context/Context';
 import { colorGenerator } from '../../../functions/colorGenerator';
 import styles from './Boards.module.css';
+import BoardsHeader from './BoardsHeader/BoardsHeader';
 
 function Boards(): JSX.Element {
   const { store } = useContext(Context);
-  const { boards } = store.boards;
+  const { boards } = store;
   return (
     <>
-      <div className={styles.header}>
-        <h1>Boards</h1>
-        <div className={styles.sortWrap}>
-          <div className={styles.icon} onClick={store.sortBoards}>
-            <Icon
-              iconChild={<AiOutlineSortAscending />}
-              styles={{
-                className: 'sort',
-                size: '25',
-              }}
-            />
-          </div>
-          <div className={styles.icon}>
-            <Icon
-              iconChild={<AiOutlineSortDescending />}
-              styles={{
-                className: 'sort',
-                size: '25',
-              }}
-            />
-          </div>
-        </div>
-      </div>
+      <BoardsHeader />
 
       <div className={styles.boardsWrap}>
         {boards.map((item) => (
