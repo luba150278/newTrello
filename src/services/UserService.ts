@@ -12,7 +12,6 @@ export default class UserService {
   }
 
   static async login(email: string, password: string): Promise<AxiosResponse<ILoginResponse>> {
-    console.log(email, password);
     const response = await api.post(config.login, { email, password });
     return response;
   }

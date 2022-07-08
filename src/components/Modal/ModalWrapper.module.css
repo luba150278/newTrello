@@ -1,0 +1,43 @@
+.desktopModalContainer {
+  border-radius: 7px;
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.5);
+  padding: 40px;
+  width: 450px;
+  font-size: 26px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+@media screen and (max-width: 480px) {
+  .desktopModalContainer {
+    width: 100%;
+  }
+}
+
+.header {
+  color: #25306c;
+  font-size: 26px;
+  line-height: 1em;
+  font-weight: bold;
+  margin: 5px 0 10px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  left: 80%;
+}
+.close:hover {
+  cursor: pointer;
+}
+.close-icon {
+  color: rgb(128, 127, 127);
+  height: 1rem;
+}
+.close-icon:hover {
+  color: #bb2a81;
+}

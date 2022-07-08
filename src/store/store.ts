@@ -1,8 +1,12 @@
 /* eslint-disable no-console */
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
+import { DANGER_NAME } from '../common/constans/messages';
+import getNotify from '../functions/notify';
 // import getNotify from '../functions/notify';
 import setErrorFunction from '../functions/setErrors';
+import getSuccessNotify from '../functions/sucessNotify';
+import { isValidTitle } from '../functions/validTitles';
 import { IBoard } from '../interfaces/Board';
 import { ILoginResponse } from '../interfaces/ILoginResponse';
 import { IInputDefaultData } from '../interfaces/IUserDefaultData';
@@ -24,18 +28,33 @@ export default class Store {
 
   defaultData = { email: '', password: '' } as IInputDefaultData;
 
+  isModal = false;
+
   constructor() {
     makeAutoObservable(this);
+    this.checkAuth();
     if (this.isAuth) {
       this.getBoards();
     }
+  }
+
+  setModal(bool: boolean): void {
+    this.isModal = bool;
   }
 
   setLoading(bool: boolean): void {
     this.isLoading = bool;
   }
 
-  setError(e: AxiosError): void {
+  checkAuth(): void {
+    if (localStorage.getItem('token')) {
+      this.setAuth(true);
+      return;
+    }
+    this.setAuth(false);
+  }
+
+  setError(e: unknown): void {
     const { status, message } = setErrorFunction(e);
     this.error = { status, message };
   }
@@ -51,7 +70,7 @@ export default class Store {
       this.setBoards(response.data.boards);
       this.setLoading(false);
     } catch (e) {
-      this.setError(e as AxiosError);
+      this.setError(e);
     } finally {
       this.setLoading(false);
     }
@@ -86,13 +105,12 @@ export default class Store {
   }
 
   async registration(email: string, password: string): Promise<void> {
-    this.setLoading(true);
     try {
-      const response = await UserService.registration(email, password);
-      console.log(response);
+      this.setLoading(true);
+      await UserService.registration(email, password);
       this.setLoading(false);
     } catch (e) {
-      this.setError(e as AxiosError);
+      this.setError(e);
     } finally {
       this.setLoading(false);
     }
@@ -111,15 +129,41 @@ export default class Store {
     this.setAuth(true);
   }
 
+  logout(): void {
+    try {
+      localStorage.removeItem('token');
+      this.setAuth(false);
+    } catch (e) {
+      this.setError(e);
+    }
+  }
+
   async login(email: string, password: string): Promise<void> {
     try {
       this.setLoading(true);
       const response = await UserService.login(email, password);
       this.setToken(response);
-      this.setLoading(false);
     } catch (e) {
       this.setDefaultData({ email, password });
-      this.setError(e as AxiosError);
+      this.setError(e);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  async addBoard(title: string): Promise<void> {
+    try {
+      const validTitle = isValidTitle(title);
+      if (!validTitle) {
+        getNotify(DANGER_NAME);
+        return;
+      }
+      await BoardService.addBoard(title);
+      this.setModal(false);
+      getSuccessNotify('New Board was created');
+      this.getBoards();
+    } catch (e) {
+      this.setError(e);
     } finally {
       this.setLoading(false);
     }

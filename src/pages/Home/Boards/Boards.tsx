@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
+import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import ModalWrapper from '../../../components/Modal/ModalWrapper';
 import Context from '../../../context/Context';
 import { colorGenerator } from '../../../functions/colorGenerator';
 import styles from './Boards.module.css';
@@ -9,6 +11,7 @@ import BoardsHeader from './BoardsHeader/BoardsHeader';
 function Boards(): JSX.Element {
   const { store } = useContext(Context);
   const { boards } = store;
+
   return (
     <>
       <BoardsHeader />
@@ -25,8 +28,19 @@ function Boards(): JSX.Element {
           </Link>
         ))}
       </div>
+
+      <ModalWrapper
+        isCard={false}
+        card={{
+          id: 0,
+          position: 0,
+          title: '',
+          description: '',
+          users: [0],
+        }}
+      />
     </>
   );
 }
 
-export default Boards;
+export default observer(Boards);

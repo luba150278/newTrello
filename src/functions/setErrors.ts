@@ -9,17 +9,15 @@ interface IProps {
   message: string;
 }
 
-export default function setErrorFunction(e: AxiosError): IProps {
-  if (e.response) {
-    const data = e.response.data as AxiosError;
-    if (data) {
-      const message = getErrorMessage(data.message);
-      getNotify(data.message);
-      return { status: e.response.status, message };
+export default function setErrorFunction(e: unknown): IProps {
+  if (e instanceof AxiosError) {
+    if (e.response?.data.error.message) {
+      const message = getErrorMessage(e.response?.data.error.message);
+      getNotify(message);
+      return { status: e.response?.status ? e.response?.status : 500, message };
     }
     getNotify(ERROR_SERVER);
     return { status: 500, message: ERROR_SERVER };
   }
-
   return { status: 500, message: 'Unknown error' };
 }

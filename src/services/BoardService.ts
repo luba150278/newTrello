@@ -3,10 +3,16 @@ import { AxiosResponse } from 'axios';
 import api from '../api/request';
 import config from '../common/constans/api';
 import { IBoards } from '../interfaces/Boards';
+import { ILoginResponse } from '../interfaces/ILoginResponse';
 
 export default class BoardService {
   static async getBoards(): Promise<AxiosResponse<IBoards>> {
     const response = await api.get(config.board);
+    return response;
+  }
+
+  static async addBoard(title: string): Promise<AxiosResponse<ILoginResponse>> {
+    const response = await api.post(config.board, { title });
     return response;
   }
 }

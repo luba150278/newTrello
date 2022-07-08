@@ -1,5 +1,8 @@
+/* eslint-disable no-console */
+import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react';
 import { AiOutlineSortAscending, AiOutlineSortDescending } from 'react-icons/ai';
+import { RiAddCircleLine } from 'react-icons/ri';
 import Icon from '../../../../components/Icon/Icon';
 import Context from '../../../../context/Context';
 import styles from './BoardsHeader.module.css';
@@ -13,7 +16,7 @@ function BoardsHeader(): JSX.Element {
       <h1>Boards</h1>
       <div className={styles.sortWrap}>
         <div
-          className={styles.icon}
+          className={styles.iconDiv}
           onClick={(): void => {
             store.sortBoards(boards);
             setClick(1);
@@ -22,7 +25,7 @@ function BoardsHeader(): JSX.Element {
           <Icon
             iconChild={<AiOutlineSortAscending />}
             styles={{
-              className: click === 1 ? 'sort active' : 'sort',
+              className: click === 1 ? 'icon active' : 'icon',
               size: '25',
             }}
             isToolTip={false}
@@ -30,7 +33,7 @@ function BoardsHeader(): JSX.Element {
           />
         </div>
         <div
-          className={styles.icon}
+          className={styles.iconDiv}
           onClick={(): void => {
             store.sortDescBoards(boards);
             setClick(2);
@@ -39,7 +42,7 @@ function BoardsHeader(): JSX.Element {
           <Icon
             iconChild={<AiOutlineSortDescending />}
             styles={{
-              className: click === 2 ? 'sort active' : 'sort',
+              className: click === 2 ? 'icon active' : 'icon',
               size: '25',
             }}
             isToolTip={false}
@@ -47,8 +50,19 @@ function BoardsHeader(): JSX.Element {
           />
         </div>
       </div>
+      <div className={styles.addBoardWrapp} onClick={(): void => store.setModal(true)}>
+        <Icon
+          iconChild={<RiAddCircleLine />}
+          styles={{
+            className: 'icon',
+            size: '25',
+          }}
+          isToolTip={false}
+          toolTipText=""
+        />
+      </div>
     </div>
   );
 }
 
-export default BoardsHeader;
+export default observer(BoardsHeader);

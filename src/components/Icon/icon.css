@@ -1,8 +1,8 @@
 
 @import '../../index.css';
-.sort:hover{
+.icon:hover{
   color: var(--accent-color);
 }
-.sort.active{
+.icon.active{
   color: var(--contrast-color);
 }

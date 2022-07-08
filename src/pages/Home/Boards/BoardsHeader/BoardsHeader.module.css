@@ -1,7 +1,8 @@
 .header{
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto;
   justify-content: flex-start;
+  align-items: center;
   gap: 40px;
   margin-bottom: 40px;
 } 
@@ -11,9 +12,12 @@
   align-items: center;
   gap: 10px;
 }
-.icon{
+.iconDiv{
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+}
+.addBoardWrapp{
   cursor: pointer;
 }
