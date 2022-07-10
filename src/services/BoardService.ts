@@ -38,4 +38,13 @@ export default class BoardService {
   static async deleteList(id: string, idList: string): Promise<AxiosResponse<IBoardResponse>> {
     return api.delete(`${config.board}/${id}/list/${idList}`);
   }
+
+  static async editListTitle(
+    title: string,
+    id: string,
+    position: number,
+    idList: string
+  ): Promise<AxiosResponse<IBoardResponse>> {
+    return api.put(`${config.board}/${id}/list/${idList}`, { title, position });
+  }
 }

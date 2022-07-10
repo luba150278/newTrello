@@ -1,7 +1,14 @@
 /* eslint-disable no-console */
 import { AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
-import { DANGER_NAME } from '../common/constans/messages';
+import {
+  DANGER_NAME,
+  SUCCESS_BOARD_DELETE,
+  SUCCESS_BOARD_CREATE,
+  SUCCESS_LIST_DELETE,
+  SUCCESS_LIST_CREATE,
+  EDIT_LIST,
+} from '../common/constans/messages';
 import getNotify from '../functions/notify';
 import setErrorFunction from '../functions/setErrors';
 import getSuccessNotify from '../functions/sucessNotify';
@@ -14,24 +21,6 @@ import BoardService from '../services/BoardService';
 import UserService from '../services/UserService';
 
 export default class Store {
-  isAuth = false;
-
-  isLoading = false;
-
-  error = { status: 200, message: '' };
-
-  boards = [] as IBoard[];
-
-  lists = { users: [], lists: [] } as ILists;
-
-  defaultData = { email: '', password: '' } as IInputDefaultData;
-
-  isModal = false;
-
-  User = localStorage.getItem('name') || '';
-
-  boardTitle = '';
-
   constructor() {
     makeAutoObservable(this);
     this.checkAuth();
@@ -41,6 +30,26 @@ export default class Store {
     }
   }
 
+  // ---Variants--------------
+  isAuth = false;
+
+  isLoading = false;
+
+  error = { status: 200, message: '' };
+
+  boards = [] as IBoard[];
+
+  // lists = { users: [], lists: [] } as ILists;
+
+  defaultData = { email: '', password: '' } as IInputDefaultData;
+
+  isModal = false;
+
+  User = localStorage.getItem('name') || '';
+
+  boardTitle = '';
+
+  // ---Setters--------------
   setUser(): void {
     this.User = localStorage.getItem('name') || '';
   }
@@ -53,17 +62,9 @@ export default class Store {
     this.isLoading = bool;
   }
 
-  setLists(data: ILists): void {
-    this.lists = data;
-  }
-
-  checkAuth(): void {
-    if (localStorage.getItem('token')) {
-      this.setAuth(true);
-      return;
-    }
-    this.setAuth(false);
-  }
+  // setLists(data: ILists): void {
+  //   this.lists = data;
+  // }
 
   setError(e: unknown): void {
     const { status, message } = setErrorFunction(e);
@@ -74,28 +75,31 @@ export default class Store {
     this.boards = data;
   }
 
-  async getBoards(): Promise<void> {
-    try {
-      this.setLoading(true);
-      const response = await BoardService.getBoards();
-      this.setBoards(response.data.boards);
-    } catch (e) {
-      this.setError(e);
-    } finally {
-      this.setLoading(false);
+  setAuth(bool: boolean): void {
+    this.isAuth = bool;
+  }
+
+  setToken(response: AxiosResponse<ILoginResponse>): void {
+    localStorage.setItem('token', response.data.token);
+    this.setAuth(true);
+  }
+
+  setDefaultData(data: IInputDefaultData): void {
+    this.defaultData = data;
+  }
+
+  setBoard(title: string): void {
+    this.boardTitle = title;
+  }
+
+  // --------------Functions------------------
+  // ------------------------AUTH----------------
+  checkAuth(): void {
+    if (localStorage.getItem('token')) {
+      this.setAuth(true);
+      return;
     }
-  }
-
-  sortBoards(boards: IBoard[]): void {
-    const arr = boards;
-    arr.sort((a: IBoard, b: IBoard) => (a.title > b.title ? 1 : -1));
-    this.setBoards(arr);
-  }
-
-  sortDescBoards(boards: IBoard[]): void {
-    const arr = boards;
-    arr.sort((a: IBoard, b: IBoard) => (a.title > b.title ? -1 : 1));
-    this.setBoards(arr);
+    this.setAuth(false);
   }
 
   async registration(email: string, password: string): Promise<void> {
@@ -108,19 +112,6 @@ export default class Store {
     } finally {
       this.setLoading(false);
     }
-  }
-
-  setAuth(bool: boolean): void {
-    this.isAuth = bool;
-  }
-
-  // setUser(user: IUser): void {
-  //   this.user = user;
-  // }
-
-  setToken(response: AxiosResponse<ILoginResponse>): void {
-    localStorage.setItem('token', response.data.token);
-    this.setAuth(true);
   }
 
   logout(): void {
@@ -151,6 +142,19 @@ export default class Store {
     }
   }
 
+  // -----------------BOARDS-------------------
+  async getBoards(): Promise<void> {
+    try {
+      this.setLoading(true);
+      const response = await BoardService.getBoards();
+      this.setBoards(response.data.boards);
+    } catch (e) {
+      this.setError(e);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
   async addBoard(title: string): Promise<void> {
     try {
       this.setLoading(true);
@@ -161,21 +165,13 @@ export default class Store {
       }
       await BoardService.addBoard(title);
       this.setModal(false);
-      getSuccessNotify('New Board was created');
+      getSuccessNotify(SUCCESS_BOARD_CREATE);
       this.getBoards();
     } catch (e) {
       this.setError(e);
     } finally {
       this.setLoading(false);
     }
-  }
-
-  setDefaultData(data: IInputDefaultData): void {
-    this.defaultData = data;
-  }
-
-  setBoard(title: string): void {
-    this.boardTitle = title;
   }
 
   async editBoardTitle(title: string, id: string): Promise<void> {
@@ -197,7 +193,7 @@ export default class Store {
       const response = await BoardService.deleteBoard(id);
       if (response.data.result === 'Deleted') {
         this.getBoards();
-        getSuccessNotify('Board was deleted!');
+        getSuccessNotify(SUCCESS_BOARD_DELETE);
       }
       return 'error deleted';
     } catch (e) {
@@ -207,13 +203,14 @@ export default class Store {
     }
   }
 
+  // -------------------------LIST----------------------------------------
   async deleteList(id: string, idList: string): Promise<string | void> {
     try {
       this.setLoading(true);
       const response = await BoardService.deleteList(id, idList);
       if (response.data.result === 'Deleted') {
         this.getLists(id);
-        getSuccessNotify('List was deleted!');
+        getSuccessNotify(SUCCESS_LIST_DELETE);
       }
       return 'error deleted';
     } catch (e) {
@@ -227,7 +224,7 @@ export default class Store {
     try {
       this.setLoading(true);
       const response = await BoardService.getLists(id);
-      this.setLists(response.data);
+      // this.setLists(response.data);
       return response.data;
     } catch (e) {
       this.setError(e);
@@ -242,12 +239,39 @@ export default class Store {
     try {
       const response = await BoardService.addList(title, id, position);
       if (response.data.result === 'Created') {
-        getSuccessNotify('New List was created!');
+        getSuccessNotify(SUCCESS_LIST_CREATE);
       }
     } catch (e) {
       this.setError(e);
     } finally {
       this.setLoading(false);
     }
+  }
+
+  async editListTitle(title: string, id: string, position: number, idList: string): Promise<void> {
+    this.setLoading(true);
+    try {
+      const response = await BoardService.editListTitle(title, id, position, idList);
+      if (response.data.result === 'Updated') {
+        getSuccessNotify(EDIT_LIST);
+      }
+    } catch (e) {
+      this.setError(e);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  // ---------------------OTHERS------------------
+  sortBoards(boards: IBoard[]): void {
+    const arr = boards;
+    arr.sort((a: IBoard, b: IBoard) => (a.title > b.title ? 1 : -1));
+    this.setBoards(arr);
+  }
+
+  sortDescBoards(boards: IBoard[]): void {
+    const arr = boards;
+    arr.sort((a: IBoard, b: IBoard) => (a.title > b.title ? -1 : 1));
+    this.setBoards(arr);
   }
 }

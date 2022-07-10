@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { IList } from '../../interfaces/ILists';
 import styles from './Lists.module.css';
 import DeleteBoard from '../DeleteBoard/DeleteBoard';
+import ListTitle from '../ListTitle/ListTitle';
 
 export interface Props {
   lists: IList[];
@@ -35,7 +36,7 @@ function Lists({ lists, id, getList }: Props): JSX.Element {
       {lists.map((item) => (
         <motion.li className={cn('card', styles.listItem)} key={item.id} variants={li}>
           <div className={styles.listTitle}>
-            <h3>{item.title}</h3>
+            <ListTitle id={id} startTitle={item.title} idList={item.id} pos={item.position} getList={getList} />
             <DeleteBoard id={id} what="list" idList={item.id} getList={getList} />
           </div>
         </motion.li>

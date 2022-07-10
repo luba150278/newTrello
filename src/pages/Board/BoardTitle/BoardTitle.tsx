@@ -2,7 +2,7 @@
 import { observer } from 'mobx-react-lite';
 import cn from 'classnames';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { DANGER_NAME } from '../../../common/constans/messages';
+import { DANGER_NAME, EDIT_BOARD } from '../../../common/constans/messages';
 import Context from '../../../context/Context';
 import getNotify from '../../../functions/notify';
 import getSuccessNotify from '../../../functions/sucessNotify';
@@ -37,17 +37,9 @@ function BoardTitle({ startTitle, id }: Props): JSX.Element {
         return;
       }
       store.editBoardTitle(title, `${id}`);
-      getSuccessNotify('Board was updated!');
+      getSuccessNotify(EDIT_BOARD);
     }
   };
-
-  // const keyUpHandler = (): void => {
-  //   if (!checkValid()) {
-  //     getNotify(DANGER_NAME);
-  //     return;
-  //   }
-  //   store.editBoardTitle(title, `${id}`);
-  // };
 
   const blurHandler = (): void => {
     if (startTitle !== title) {
@@ -63,7 +55,6 @@ function BoardTitle({ startTitle, id }: Props): JSX.Element {
     ph: title,
     changeHandler,
     onKeyPress: keyPressHandler,
-    // onKeyUp: keyUpHandler,
     onBlur: blurHandler,
     cln: 'input-row',
     clni: 'h1',
