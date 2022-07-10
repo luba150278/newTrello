@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import api from '../api/request';
 import config from '../common/constans/api';
 import { ILoginResponse } from '../interfaces/ILoginResponse';
-import { IUser } from '../interfaces/IUser';
+import { IUser } from '../interfaces/IUserResponse';
 
 export default class UserService {
   static async registration(email: string, password: string): Promise<AxiosResponse<IUser>> {

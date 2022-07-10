@@ -1,22 +1,17 @@
 /* eslint-disable no-console */
 import { AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
-// import { useParams } from 'react-router-dom';
 import { DANGER_NAME } from '../common/constans/messages';
 import getNotify from '../functions/notify';
-// import getNotify from '../functions/notify';
 import setErrorFunction from '../functions/setErrors';
 import getSuccessNotify from '../functions/sucessNotify';
 import { isValidTitle } from '../functions/validTitles';
-import { IBoard } from '../interfaces/Board';
+import { IBoard } from '../interfaces/IBoard';
+import { ILists } from '../interfaces/ILists';
 import { ILoginResponse } from '../interfaces/ILoginResponse';
 import { IInputDefaultData } from '../interfaces/IUserDefaultData';
-// import { IBoards } from '../interfaces/Boards';
 import BoardService from '../services/BoardService';
 import UserService from '../services/UserService';
-
-// import getSuccessNotify from '../functions/sucessNotify';
-// import { headersConfig } from '../http/header-config';
 
 export default class Store {
   isAuth = false;
@@ -26,6 +21,8 @@ export default class Store {
   error = { status: 200, message: '' };
 
   boards = [] as IBoard[];
+
+  lists = { users: [], lists: [] } as ILists;
 
   defaultData = { email: '', password: '' } as IInputDefaultData;
 
@@ -54,6 +51,10 @@ export default class Store {
 
   setLoading(bool: boolean): void {
     this.isLoading = bool;
+  }
+
+  setLists(data: ILists): void {
+    this.lists = data;
   }
 
   checkAuth(): void {
@@ -87,29 +88,13 @@ export default class Store {
 
   sortBoards(boards: IBoard[]): void {
     const arr = boards;
-    arr.sort((a: IBoard, b: IBoard) => {
-      if (a.title > b.title) {
-        return 1;
-      }
-      if (a.title < b.title) {
-        return -1;
-      }
-      return 0;
-    });
+    arr.sort((a: IBoard, b: IBoard) => (a.title > b.title ? 1 : -1));
     this.setBoards(arr);
   }
 
   sortDescBoards(boards: IBoard[]): void {
     const arr = boards;
-    arr.sort((a: IBoard, b: IBoard) => {
-      if (a.title > b.title) {
-        return -1;
-      }
-      if (a.title < b.title) {
-        return 1;
-      }
-      return 0;
-    });
+    arr.sort((a: IBoard, b: IBoard) => (a.title > b.title ? -1 : 1));
     this.setBoards(arr);
   }
 
@@ -193,12 +178,6 @@ export default class Store {
     this.boardTitle = title;
   }
 
-  // findBoard(id: number): string {
-  //   const data = this.boards.find((item) => item.id === id);
-  //   this.setBoard(data?.title || '');
-  //   return data?.title || '';
-  // }
-
   async editBoardTitle(title: string, id: string): Promise<void> {
     try {
       this.setLoading(true);
@@ -223,6 +202,50 @@ export default class Store {
       return 'error deleted';
     } catch (e) {
       return this.setError(e);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  async deleteList(id: string, idList: string): Promise<string | void> {
+    try {
+      this.setLoading(true);
+      const response = await BoardService.deleteList(id, idList);
+      if (response.data.result === 'Deleted') {
+        this.getLists(id);
+        getSuccessNotify('List was deleted!');
+      }
+      return 'error deleted';
+    } catch (e) {
+      return this.setError(e);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  async getLists(id: string): Promise<ILists> {
+    try {
+      this.setLoading(true);
+      const response = await BoardService.getLists(id);
+      this.setLists(response.data);
+      return response.data;
+    } catch (e) {
+      this.setError(e);
+      return { users: [], lists: [] };
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  async addList(title: string, id: string, position: number): Promise<void> {
+    this.setLoading(true);
+    try {
+      const response = await BoardService.addList(title, id, position);
+      if (response.data.result === 'Created') {
+        getSuccessNotify('New List was created!');
+      }
+    } catch (e) {
+      this.setError(e);
     } finally {
       this.setLoading(false);
     }

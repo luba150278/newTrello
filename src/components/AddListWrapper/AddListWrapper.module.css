@@ -1,0 +1,15 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.addPanel {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.listNumber {
+  font-weight: bold;
+}

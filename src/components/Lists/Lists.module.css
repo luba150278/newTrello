@@ -1,0 +1,13 @@
+.lists{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.listItem{
+  box-shadow: 4px 4px 8px 0px var(--box-shadow);
+  padding: 10px;
+}
+.listTitle{
+ position: relative;
+}

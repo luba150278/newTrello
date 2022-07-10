@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable no-console */
 import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
@@ -9,17 +10,31 @@ import styles from './DeleteBoard.module.css';
 
 export interface IProps {
   id: number;
+  what: 'board' | 'list' | 'card';
+  idList?: number;
+  getList?: () => Promise<void>;
 }
 
-function DeleteBoard({ id }: IProps): JSX.Element {
+function DeleteBoard({ id, what, idList = 0, getList }: IProps): JSX.Element {
   const history = useNavigate();
   const { store } = useContext(Context);
+
+  async function deleteList(): Promise<void> {
+    await store.deleteList(`${id}`, `${idList}`);
+    if (getList) await getList();
+  }
+
   return (
     <div
       className={styles.trashDiv}
-      onClick={(): void => {
-        store.deleteBoard(`${id}`);
-        history('/');
+      onClick={async (): Promise<void> => {
+        if (what === 'board') {
+          store.deleteBoard(`${id}`);
+          history('/');
+        }
+        if (what === 'list') {
+          await deleteList();
+        }
       }}
     >
       <Icon iconChild={<FaRegTrashAlt />} styles={{ className: 'icon', size: '20' }} />

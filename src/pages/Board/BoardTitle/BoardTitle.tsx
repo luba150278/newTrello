@@ -73,7 +73,7 @@ function BoardTitle({ startTitle, id }: Props): JSX.Element {
   return (
     <div className={cn('card', styles.boardHeaderTitle)}>
       <InputBlock inputData={inputData} />
-      <DeleteBoard id={id} />
+      <DeleteBoard id={id} what="board" />
     </div>
   );
 }
