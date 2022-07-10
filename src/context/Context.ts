@@ -4,8 +4,9 @@ import Store from '../store/store';
 interface IStore {
   store: Store;
 }
+export const store = new Store();
 const Context = React.createContext<IStore>({
-  store: new Store(),
+  store,
 });
 export const ContextProvider = Context.Provider;
 export default Context;

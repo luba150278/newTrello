@@ -10,6 +10,7 @@ import LoginForm from '../../components/LoginForm/LoginForm';
 
 function Home(): JSX.Element {
   const { store } = useContext(Context);
+  // store.getBoards();
 
   if (store.isLoading) {
     return (

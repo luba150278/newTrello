@@ -28,8 +28,6 @@ function BoardsHeader(): JSX.Element {
               className: click === 1 ? 'icon active' : 'icon',
               size: '25',
             }}
-            isToolTip={false}
-            toolTipText=""
           />
         </div>
         <div
@@ -57,8 +55,9 @@ function BoardsHeader(): JSX.Element {
             className: 'icon',
             size: '25',
           }}
-          isToolTip={false}
-          toolTipText=""
+          isToolTip
+          toolTipText="Add a new board"
+          toolTipPlace="top"
         />
       </div>
     </div>

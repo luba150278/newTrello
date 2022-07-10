@@ -4,17 +4,14 @@ import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { ADD_BOARD } from '../../common/constans/messages';
 import Context from '../../context/Context';
-import { IAlert } from '../../interfaces/IAlert';
 import { IInput } from '../../interfaces/IInput';
-import InputBlock from '../InputBlock';
+import InputBlock from '../InputBlock/InputBlock';
 import styles from './BoardCreate.module.css';
 // import 'react-toastify/dist/ReactToastify.css';
 
 function BoardCreate(): JSX.Element {
   const { store } = useContext(Context);
   const [title, setTitle] = useState<string>('');
-  const startAlert: IAlert = { isShow: false, isDanger: false, text: '' };
-  const [alertState] = useState<IAlert>(startAlert);
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
 
   const keyPressHandler = (event: React.KeyboardEvent): void => {
@@ -34,7 +31,7 @@ function BoardCreate(): JSX.Element {
   };
   return (
     <div className={styles.mainContainer}>
-      <InputBlock alertState={alertState} inputData={inputData} />
+      <InputBlock inputData={inputData} />
 
       <Button variant="primary" className={styles.btnNewBoard} onClick={(): Promise<void> => store.addBoard(title)}>
         {ADD_BOARD}

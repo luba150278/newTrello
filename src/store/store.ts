@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
+// import { useParams } from 'react-router-dom';
 import { DANGER_NAME } from '../common/constans/messages';
 import getNotify from '../functions/notify';
 // import getNotify from '../functions/notify';
@@ -30,12 +31,21 @@ export default class Store {
 
   isModal = false;
 
+  User = localStorage.getItem('name') || '';
+
+  boardTitle = '';
+
   constructor() {
     makeAutoObservable(this);
     this.checkAuth();
     if (this.isAuth) {
       this.getBoards();
+      this.setUser();
     }
+  }
+
+  setUser(): void {
+    this.User = localStorage.getItem('name') || '';
   }
 
   setModal(bool: boolean): void {
@@ -68,7 +78,6 @@ export default class Store {
       this.setLoading(true);
       const response = await BoardService.getBoards();
       this.setBoards(response.data.boards);
-      this.setLoading(false);
     } catch (e) {
       this.setError(e);
     } finally {
@@ -132,6 +141,7 @@ export default class Store {
   logout(): void {
     try {
       localStorage.removeItem('token');
+      localStorage.removeItem('name');
       this.setAuth(false);
     } catch (e) {
       this.setError(e);
@@ -143,6 +153,11 @@ export default class Store {
       this.setLoading(true);
       const response = await UserService.login(email, password);
       this.setToken(response);
+      this.setDefaultData({ email, password });
+      const fi = email.indexOf('@');
+      const name = email.slice(0, fi);
+      localStorage.setItem('name', name || email);
+      this.setUser();
     } catch (e) {
       this.setDefaultData({ email, password });
       this.setError(e);
@@ -153,6 +168,7 @@ export default class Store {
 
   async addBoard(title: string): Promise<void> {
     try {
+      this.setLoading(true);
       const validTitle = isValidTitle(title);
       if (!validTitle) {
         getNotify(DANGER_NAME);
@@ -171,5 +187,44 @@ export default class Store {
 
   setDefaultData(data: IInputDefaultData): void {
     this.defaultData = data;
+  }
+
+  setBoard(title: string): void {
+    this.boardTitle = title;
+  }
+
+  // findBoard(id: number): string {
+  //   const data = this.boards.find((item) => item.id === id);
+  //   this.setBoard(data?.title || '');
+  //   return data?.title || '';
+  // }
+
+  async editBoardTitle(title: string, id: string): Promise<void> {
+    try {
+      this.setLoading(true);
+      await BoardService.editBoard(title, id);
+      this.setBoard(title);
+      this.getBoards();
+    } catch (e) {
+      this.setError(e);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  async deleteBoard(id: string): Promise<string | void> {
+    try {
+      this.setLoading(true);
+      const response = await BoardService.deleteBoard(id);
+      if (response.data.result === 'Deleted') {
+        this.getBoards();
+        getSuccessNotify('Board was deleted!');
+      }
+      return 'error deleted';
+    } catch (e) {
+      return this.setError(e);
+    } finally {
+      this.setLoading(false);
+    }
   }
 }

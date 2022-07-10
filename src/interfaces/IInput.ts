@@ -1,4 +1,4 @@
-import { LegacyRef } from 'react';
+import { RefObject } from 'react';
 
 export interface IInput {
   title: string;
@@ -9,5 +9,5 @@ export interface IInput {
   onBlur?: () => void;
   cln?: string;
   clni?: string;
-  ref: LegacyRef<HTMLInputElement> | undefined;
+  ref: RefObject<HTMLInputElement> | null | undefined;
 }

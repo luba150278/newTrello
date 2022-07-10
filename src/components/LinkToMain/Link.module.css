@@ -1,0 +1,9 @@
+.linkToHome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.linkToHome:hover{
+  color: var(--accent-color);
+}

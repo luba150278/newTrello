@@ -13,12 +13,12 @@ function Header(): JSX.Element {
     <header className={cn(styles.header, { [styles.hidden]: !store.isAuth })}>
       <Container>
         <div className={styles.headerInner}>
-          <p>{store.isAuth ? 'auth' : 'notAuth'}</p>
+          <p>{store.isAuth ? store.User : 'notAuth'}</p>
           <div className={styles.logoutDiv} onClick={(): void => store.logout()}>
             <Icon
               iconChild={<RiLogoutCircleRLine />}
               styles={{ className: 'logoutIcon icon', size: '20', title: 'logout icon' }}
-              isToolTip={false}
+              isToolTip
               toolTipText="logout"
             />
           </div>
