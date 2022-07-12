@@ -1,10 +1,14 @@
-import React from 'react';
+/* eslint-disable no-console */
+import React, { useState, useContext } from 'react';
 import cn from 'classnames';
-import { motion } from 'framer-motion';
+import { Reorder } from 'framer-motion';
+import { observer } from 'mobx-react-lite';
 import { ICard } from '../../interfaces/ICard';
 import styles from './CardList.module.css';
 import { listItem, ulCard } from '../../common/constans/motionList';
 import CardItem from '../CardItem/CardItem';
+import GetListContext from '../../context/GetListContext';
+import Context from '../../context/Context';
 
 export interface Props {
   cards: ICard[];
@@ -12,15 +16,37 @@ export interface Props {
 }
 
 function CardList({ cards, idList }: Props): JSX.Element {
+  const { store } = useContext(Context);
+  const { id } = useContext(GetListContext);
+  const [items, setItems] = useState(cards);
+  // console.log(items, cards);
+  async function xxx(): Promise<void> {
+    await store.moveCardInOneList(items, id, idList);
+    // await getList();
+  }
   return (
-    <motion.ul className={styles.cardWrap} variants={ulCard} initial="hidden" animate="show">
-      {cards.map((card) => (
-        <motion.li key={card.id} className={cn('card', styles.cardItem)} variants={listItem}>
+    <Reorder.Group
+      values={items}
+      onReorder={setItems}
+      className={styles.cardWrap}
+      variants={ulCard}
+      initial="hidden"
+      animate="show"
+    >
+      {items.map((card) => (
+        <Reorder.Item
+          value={card}
+          key={card.id}
+          className={cn('card', styles.cardItem)}
+          variants={listItem}
+          onDragEnd={(): Promise<void> => xxx()}
+          // onDrag={(event, info): void => console.log(info.point.x, info.point.y)}
+        >
           <CardItem startTitle={card.title} idCard={`${card.id}`} idList={idList} />
-        </motion.li>
+        </Reorder.Item>
       ))}
-    </motion.ul>
+    </Reorder.Group>
   );
 }
 
-export default CardList;
+export default observer(CardList);

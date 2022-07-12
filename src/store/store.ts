@@ -16,6 +16,8 @@ import setErrorFunction from '../functions/setErrors';
 import getSuccessNotify from '../functions/sucessNotify';
 import { isValidTitle } from '../functions/validTitles';
 import { IBoard } from '../interfaces/IBoard';
+import { ICard } from '../interfaces/ICard';
+import { ICardMove } from '../interfaces/ICardMove';
 import { ILists } from '../interfaces/ILists';
 import { ILoginResponse } from '../interfaces/ILoginResponse';
 import { IInputDefaultData } from '../interfaces/IUserDefaultData';
@@ -298,6 +300,18 @@ export default class Store {
       if (response.data.result === 'Updated') {
         getSuccessNotify(EDIT_CARD);
       }
+    } catch (e) {
+      this.setError(e);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  async moveCardInOneList(cards: ICard[], id: string, idList: number): Promise<void> {
+    try {
+      const newData: ICardMove[] = [];
+      cards.map((card, i) => newData.push({ id: card.id, position: i + 1, list_id: idList }));
+      await BoardService.moveCardInOneList(newData, id);
     } catch (e) {
       this.setError(e);
     } finally {

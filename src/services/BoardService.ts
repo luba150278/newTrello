@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { AxiosResponse } from 'axios';
 // import api from '../api/request';
 import config from '../common/constans/api';
@@ -7,6 +8,7 @@ import { IBoardResponse } from '../interfaces/IBoardResponse';
 import { ILoginResponse } from '../interfaces/ILoginResponse';
 import { ILists } from '../interfaces/ILists';
 import $api from '../http';
+import { ICardMove } from '../interfaces/ICardMove';
 
 export default class BoardService {
   static async getBoards(): Promise<AxiosResponse<IBoards>> {
@@ -68,5 +70,9 @@ export default class BoardService {
     idCard: string
   ): Promise<AxiosResponse<IBoardResponse>> {
     return $api.put(`${config.board}/${id}/card/${idCard}`, { title, list_id: idList });
+  }
+
+  static async moveCardInOneList(newData: ICardMove[], id: string): Promise<AxiosResponse<IBoardResponse>> {
+    return $api.put(`${config.board}/${id}/card`, newData);
   }
 }
