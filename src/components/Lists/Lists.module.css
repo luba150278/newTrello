@@ -7,7 +7,5 @@
 .listItem{
   box-shadow: 4px 4px 8px 0px var(--box-shadow);
   padding: 10px;
-}
-.listTitle{
- position: relative;
+  background: var(--card-bg);
 }

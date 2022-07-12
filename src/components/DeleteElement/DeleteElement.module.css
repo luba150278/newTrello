@@ -1,0 +1,17 @@
+.trashDiv {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trashDiv:hover {
+  cursor: pointer;
+}
+.trashCard {
+  position: relative;
+  top: auto;
+  right: auto;
+}

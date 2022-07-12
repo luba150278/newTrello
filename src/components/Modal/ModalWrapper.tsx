@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable no-console */
+
 import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import { FaTimes } from 'react-icons/fa';

@@ -1,6 +1,8 @@
+
 import React, { useContext } from 'react';
 import cn from 'classnames';
 import { Button } from 'react-bootstrap';
+import { observer } from 'mobx-react-lite';
 import { ALREADY_REG } from '../../../common/constans/messages';
 import Context from '../../../context/Context';
 import styles from './Buttons.module.css';
@@ -11,7 +13,10 @@ interface IProps {
 }
 function Buttons({ isReg, changeIsReg }: IProps): JSX.Element {
   const { store } = useContext(Context);
-
+  async function xxx(): Promise<void> {
+    await store.login(store.defaultData.email, store.defaultData.password);
+    await store.getBoards();
+  }
   return (
     <div className={styles.buttonWrap}>
       <Button
@@ -29,7 +34,7 @@ function Buttons({ isReg, changeIsReg }: IProps): JSX.Element {
         <Button
           variant="primary"
           className={cn(styles.logBtn2, { [styles.hidden]: isReg })}
-          onClick={(): Promise<void> => store.login(store.defaultData.email, store.defaultData.password)}
+          onClick={(): Promise<void> => xxx()}
         >
           Login
         </Button>
@@ -38,4 +43,4 @@ function Buttons({ isReg, changeIsReg }: IProps): JSX.Element {
   );
 }
 
-export default Buttons;
+export default observer(Buttons);

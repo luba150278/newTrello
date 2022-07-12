@@ -7,6 +7,7 @@
   --contrast-color: #73274f;
   --accent-color: #02403e;
   --box-shadow: rgba(34, 60, 80, 0.2);
+  --card-bg: rgba(2, 64, 62, 0.1);
 }
 body {
   margin: 0;
@@ -32,7 +33,7 @@ p {
 .hidden {
   display: none;
 }
-ul{
+ul {
   list-style: none;
   padding-left: 0;
   margin-bottom: 0;

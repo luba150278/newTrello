@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+
 import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import { Container } from 'react-bootstrap';
@@ -10,7 +10,6 @@ import LoginForm from '../../components/LoginForm/LoginForm';
 
 function Home(): JSX.Element {
   const { store } = useContext(Context);
-  // store.getBoards();
 
   if (store.isLoading) {
     return (
@@ -23,10 +22,11 @@ function Home(): JSX.Element {
   if (!store.isAuth) {
     return <LoginForm />;
   }
+
   return (
     <section>
       <Container>
-        <Boards />
+        <Boards boards={store.boards} />
       </Container>
     </section>
   );

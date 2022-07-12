@@ -5,11 +5,30 @@
   border: none;
   text-align: center;
   margin-bottom: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .h1:focus {
   border: 2px solid var(--contrast-color);
   border-radius: 2px;
   outline: none;
+}
+
+.input-card-row > .input-group .h1{
+  background: none;
+}
+.input-card-row > .input-group .h1:focus{
+  background: white;
+}
+.list-title{
+  margin: 10px 0;
+}
+.cardData{
+  font-size: 1.2rem;
+  color: var(--fontcolor);
 }
 
 @media screen and (max-width: 640px) {

@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+
 import React from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
 import { IInput } from '../../interfaces/IInput';

@@ -1,20 +1,20 @@
-/* eslint-disable no-console */
+
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import Context from '../../context/Context';
+import GetListContext from '../../context/GetListContext';
 import { IInput } from '../../interfaces/IInput';
 import InputBlock from '../InputBlock/InputBlock';
-import styles from './AddListWrapper.module.css';
+import styles from './AddList.module.css';
 
 export interface Props {
-  id: string;
   position: number;
-  getList: () => Promise<void>;
 }
 
-function AddListWrapper({ id, position, getList }: Props): JSX.Element {
+function AddList({ position }: Props): JSX.Element {
   const { store } = useContext(Context);
+  const { id, getList } = useContext(GetListContext);
   const [title, setTitle] = useState('');
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
 
@@ -45,9 +45,9 @@ function AddListWrapper({ id, position, getList }: Props): JSX.Element {
           Add a new list
         </Button>
       </div>
-      {position !== 0 ? <div className={styles.listNumber}>The list number is {position}</div> : null}
+      {position !== 0 ? <div className={styles.listNumber}>The number of lists is {position}</div> : null}
     </div>
   );
 }
 
-export default observer(AddListWrapper);
+export default observer(AddList);

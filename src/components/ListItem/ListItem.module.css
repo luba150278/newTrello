@@ -1,0 +1,20 @@
+.listHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px
+}
+
+.addCardWrapp {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.addCardWrapp:hover {
+  cursor: pointer;
+}
+.hidden {
+  display: none;
+}

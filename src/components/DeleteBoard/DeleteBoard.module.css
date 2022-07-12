@@ -1,9 +1,0 @@
-.trashDiv{
-  position: absolute;
-  top: 2px;
-  right: 5px;
-}
-
-.trashDiv:hover{
-  cursor: pointer;
-}

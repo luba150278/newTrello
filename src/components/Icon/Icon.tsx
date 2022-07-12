@@ -1,5 +1,5 @@
 /* eslint-disable react/require-default-props */
-/* eslint-disable no-console */
+
 import React, { useMemo } from 'react';
 import { OverlayTrigger } from 'react-bootstrap';
 import { Placement } from 'react-bootstrap/esm/types';

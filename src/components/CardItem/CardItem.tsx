@@ -5,15 +5,17 @@ import GetListContext from '../../context/GetListContext';
 import getNotify from '../../functions/notify';
 import { isValidTitle } from '../../functions/validTitles';
 import { IInput } from '../../interfaces/IInput';
+import DeleteElement from '../DeleteElement/DeleteElement';
 import InputBlock from '../InputBlock/InputBlock';
+import styles from './CardItem.module.css';
 
-interface Props {
+export interface Props {
   startTitle: string;
+  idCard: string;
   idList: number;
-  pos: number;
 }
 
-function ListTitle({ startTitle, idList, pos }: Props): JSX.Element {
+function CardItem({ startTitle, idCard, idList }: Props): JSX.Element {
   const { store } = useContext(Context);
   const { id, getList } = useContext(GetListContext);
   const inputEl = useRef<HTMLInputElement>(null);
@@ -33,7 +35,7 @@ function ListTitle({ startTitle, idList, pos }: Props): JSX.Element {
       getNotify(DANGER_NAME);
       return;
     }
-    await store.editListTitle(title, id, pos, `${idList}`);
+    await store.editCardTitle(title, id, idList, idCard);
     await getList();
   }
   const keyPressHandler = (event: React.KeyboardEvent): void => {
@@ -47,17 +49,23 @@ function ListTitle({ startTitle, idList, pos }: Props): JSX.Element {
       update();
     }
   };
+
   const inputData: IInput = {
     title,
     ph: title,
     changeHandler,
     onKeyPress: keyPressHandler,
     onBlur: blurHandler,
-    cln: 'input-card-row list-title',
-    clni: 'h1',
+    cln: 'input-card-row cardTitle',
+    clni: 'h1 cardData',
     ref: inputEl,
   };
-  return <InputBlock inputData={inputData} />;
+  return (
+    <div className={styles.cardWrap}>
+      <InputBlock inputData={inputData} />
+      <DeleteElement what="card" idCard={idCard} />
+    </div>
+  );
 }
 
-export default ListTitle;
+export default CardItem;

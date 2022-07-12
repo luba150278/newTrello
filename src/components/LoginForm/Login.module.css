@@ -6,3 +6,13 @@
   padding: 20px;
   border-radius: 6px;
 }
+.regOffer{
+  margin-top: 20px;
+  font-weight: bold;
+  color: var(--font-color);
+  text-decoration: underline;
+}
+.regOffer:hover{
+  cursor: pointer;
+  color: var(--contrast-color);
+}

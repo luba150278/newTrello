@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+
 import { observer } from 'mobx-react-lite';
 import cn from 'classnames';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -10,14 +10,15 @@ import { isValidTitle } from '../../../functions/validTitles';
 import { IInput } from '../../../interfaces/IInput';
 import styles from './BoardTitle.module.css';
 import InputBlock from '../../../components/InputBlock/InputBlock';
-import DeleteBoard from '../../../components/DeleteBoard/DeleteBoard';
+import DeleteElement from '../../../components/DeleteElement/DeleteElement';
+import GetListContext from '../../../context/GetListContext';
 
 interface Props {
   startTitle: string;
-  id: number;
 }
-function BoardTitle({ startTitle, id }: Props): JSX.Element {
+function BoardTitle({ startTitle }: Props): JSX.Element {
   const { store } = useContext(Context);
+  const { id } = useContext(GetListContext);
   const inputEl = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState(startTitle);
   useEffect(() => {
@@ -36,7 +37,7 @@ function BoardTitle({ startTitle, id }: Props): JSX.Element {
         getNotify(DANGER_NAME);
         return;
       }
-      store.editBoardTitle(title, `${id}`);
+      store.editBoardTitle(title, id);
       getSuccessNotify(EDIT_BOARD);
     }
   };
@@ -47,7 +48,7 @@ function BoardTitle({ startTitle, id }: Props): JSX.Element {
         getNotify(DANGER_NAME);
         return;
       }
-      store.editBoardTitle(title, `${id}`);
+      store.editBoardTitle(title, id);
     }
   };
   const inputData: IInput = {
@@ -64,7 +65,7 @@ function BoardTitle({ startTitle, id }: Props): JSX.Element {
   return (
     <div className={cn('card', styles.boardHeaderTitle)}>
       <InputBlock inputData={inputData} />
-      <DeleteBoard id={id} what="board" />
+      <DeleteElement what="board" />
     </div>
   );
 }

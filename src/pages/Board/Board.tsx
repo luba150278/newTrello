@@ -1,20 +1,21 @@
 /* eslint-disable react/jsx-no-bind */
-/* eslint-disable no-console */
+
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import AddListWrapper from '../../components/AddListWrapper/AddListWrapper';
+import AddList from '../../components/AddList/AddList';
 import LinkToMain from '../../components/LinkToMain/Link';
 import Lists from '../../components/Lists/Lists';
 import Loader from '../../components/Loader/Loader';
 import Context from '../../context/Context';
+import { GLContextProvider } from '../../context/GetListContext';
 import { IList } from '../../interfaces/ILists';
 import { withLayout } from '../../layout/Layout';
 import BoardTitle from './BoardTitle/BoardTitle';
 
 function Board(): JSX.Element {
-  const id = Number(useParams().id) || 0;
+  const id = useParams().id || '';
   const { store } = useContext(Context);
   const { boards } = store;
   const [startTitle, setStartTitle] = useState<string>('');
@@ -22,7 +23,7 @@ function Board(): JSX.Element {
   const [pos, setPos] = useState(0);
 
   useEffect(() => {
-    const data = boards.find((item) => item.id === id);
+    const data = boards.find((item) => item.id === Number(id));
     setStartTitle(data?.title || '');
   }, [boards]);
 
@@ -50,14 +51,16 @@ function Board(): JSX.Element {
   }
 
   return (
-    <section>
-      <Container>
-        <LinkToMain />
-        <BoardTitle startTitle={startTitle} id={id} />
-        <AddListWrapper id={`${id}`} position={pos} getList={getList} />
-        <Lists id={id} lists={lists} getList={getList} />
-      </Container>
-    </section>
+    <GLContextProvider value={{ getList, id }}>
+      <section>
+        <Container>
+          <LinkToMain />
+          <BoardTitle startTitle={startTitle} />
+          <AddList position={pos} />
+          <Lists lists={lists} />
+        </Container>
+      </section>
+    </GLContextProvider>
   );
 }
 

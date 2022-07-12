@@ -1,0 +1,16 @@
+.wrapper {
+  display: grid;
+  width: 100%;
+  gap: 10px;
+  grid-auto-flow: row;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.addPanel {
+  display: grid;
+  grid-auto-flow: row;
+  gap: 10px;
+}
+.listNumber {
+  font-weight: bold;
+}

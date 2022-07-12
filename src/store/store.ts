@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
 import {
@@ -8,6 +7,9 @@ import {
   SUCCESS_LIST_DELETE,
   SUCCESS_LIST_CREATE,
   EDIT_LIST,
+  ADD_CARD,
+  SUCCESS_CARD_DELETE,
+  EDIT_CARD,
 } from '../common/constans/messages';
 import getNotify from '../functions/notify';
 import setErrorFunction from '../functions/setErrors';
@@ -49,6 +51,8 @@ export default class Store {
 
   boardTitle = '';
 
+  token = '123';
+
   // ---Setters--------------
   setUser(): void {
     this.User = localStorage.getItem('name') || '';
@@ -61,10 +65,6 @@ export default class Store {
   setLoading(bool: boolean): void {
     this.isLoading = bool;
   }
-
-  // setLists(data: ILists): void {
-  //   this.lists = data;
-  // }
 
   setError(e: unknown): void {
     const { status, message } = setErrorFunction(e);
@@ -80,6 +80,7 @@ export default class Store {
   }
 
   setToken(response: AxiosResponse<ILoginResponse>): void {
+    this.token = response.data.token;
     localStorage.setItem('token', response.data.token);
     this.setAuth(true);
   }
@@ -134,6 +135,7 @@ export default class Store {
       const name = email.slice(0, fi);
       localStorage.setItem('name', name || email);
       this.setUser();
+      // this.getBoards();
     } catch (e) {
       this.setDefaultData({ email, password });
       this.setError(e);
@@ -254,6 +256,47 @@ export default class Store {
       const response = await BoardService.editListTitle(title, id, position, idList);
       if (response.data.result === 'Updated') {
         getSuccessNotify(EDIT_LIST);
+      }
+    } catch (e) {
+      this.setError(e);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  // ---------------------CARD---------------------
+
+  async addCard(title: string, id: string, idList: number, position: number): Promise<void> {
+    try {
+      const response = await BoardService.addCard(title, id, position, idList);
+      if (response.data.result === 'Created') {
+        getSuccessNotify(ADD_CARD);
+      }
+    } catch (e) {
+      this.setError(e);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  async deleteCard(id: string, idCard: string): Promise<void> {
+    try {
+      const response = await BoardService.deleteCard(id, idCard);
+      if (response.data.result === 'Deleted') {
+        getSuccessNotify(SUCCESS_CARD_DELETE);
+      }
+    } catch (e) {
+      this.setError(e);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  async editCardTitle(title: string, id: string, idList: number, idCard: string): Promise<void> {
+    try {
+      const response = await BoardService.editCardTitle(title, id, idList, idCard);
+      if (response.data.result === 'Updated') {
+        getSuccessNotify(EDIT_CARD);
       }
     } catch (e) {
       this.setError(e);

@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+
 import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { ToastContainer } from 'react-toastify';
@@ -8,7 +8,7 @@ import Inputs from './Inputs/Inputs';
 import styles from './Login.module.css';
 
 function LoginForm(): JSX.Element {
-  const [isReg, setIsReg] = useState(true);
+  const [isReg, setIsReg] = useState(false);
   const changeIsReg = (): void => {
     setIsReg(!isReg);
   };
@@ -19,6 +19,11 @@ function LoginForm(): JSX.Element {
         <Header isReg={isReg} />
         <Inputs isReg={isReg} />
         <Buttons isReg={isReg} changeIsReg={changeIsReg} />
+        {!isReg ? (
+          <p className={styles.regOffer} onClick={changeIsReg}>
+            Registration
+          </p>
+        ) : null}
       </div>
       <ToastContainer />
     </Container>

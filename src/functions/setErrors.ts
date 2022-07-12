@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { AxiosError } from 'axios';
 import { ERROR_SERVER } from '../common/constans/messages';
 import getErrorMessage from './getErrorMessage';

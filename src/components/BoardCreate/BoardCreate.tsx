@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';

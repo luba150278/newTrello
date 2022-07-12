@@ -1,37 +1,25 @@
-/* eslint-disable no-console */
+
 import { observer } from 'mobx-react-lite';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import ModalWrapper from '../../../components/Modal/ModalWrapper';
-import Context from '../../../context/Context';
+// import Context from '../../../context/Context';
 import { colorGenerator } from '../../../functions/colorGenerator';
 import styles from './Boards.module.css';
 import BoardsHeader from './BoardsHeader/BoardsHeader';
+import { IBoard } from '../../../interfaces/IBoard';
+import { listItem, ul } from '../../../common/constans/motionList';
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const listItem = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1 },
-};
-function Boards(): JSX.Element {
-  const { store } = useContext(Context);
-  const { boards } = store;
-
+interface Props {
+  boards: IBoard[];
+}
+function Boards({ boards }: Props): JSX.Element {
   return (
     <>
       <BoardsHeader />
 
-      <motion.ul className={styles.boardsWrap} variants={container} initial="hidden" animate="show">
+      <motion.ul className={styles.boardsWrap} variants={ul} initial="hidden" animate="show">
         {boards.map((item) => (
           <motion.li key={item.id} variants={listItem}>
             <Link to={`/board/${item.id}`} className={styles.board} style={{ background: `${colorGenerator()}` }}>

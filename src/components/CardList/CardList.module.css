@@ -1,0 +1,15 @@
+.cardWrap {
+  display: grid;
+  gap: 10px;
+  grid-auto-flow: row;
+  margin-bottom: 10px;
+}
+
+.cardItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 4px 0;
+  border: 1px solid var(--link-color);
+}

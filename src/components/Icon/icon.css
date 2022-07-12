@@ -1,8 +1,13 @@
-
 @import '../../index.css';
-.icon:hover{
-  color: var(--accent-color);
+.deleteIcon {
+  fill: var(--link-color);
+  color: var(--link-color);
 }
-.icon.active{
+.icon:hover {
+  color: var(--accent-color);
+  fill: var(--accent-color);
+}
+.icon.active {
   color: var(--contrast-color);
+  fill: var(--contrast-color);
 }

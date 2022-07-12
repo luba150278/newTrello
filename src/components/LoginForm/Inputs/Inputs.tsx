@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import { Form, InputGroup, OverlayTrigger } from 'react-bootstrap';
 import cn from 'classnames';
+import { observer } from 'mobx-react-lite';
 import RenderToolTip from '../../RenderToolTip/RenderToolTip';
 import Icon from '../../Icon/Icon';
 import styles from './Inputs.module.css';
@@ -65,4 +66,4 @@ function Inputs({ isReg }: IProps): JSX.Element {
   );
 }
 
-export default Inputs;
+export default observer(Inputs);
