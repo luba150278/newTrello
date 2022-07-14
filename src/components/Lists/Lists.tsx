@@ -1,4 +1,3 @@
-
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import cn from 'classnames';
@@ -33,7 +32,7 @@ function Lists({ lists }: Props): JSX.Element {
     <motion.ul className={styles.lists} variants={ul} initial="hidden" animate="show">
       {lists.map((item) => (
         <motion.li className={cn('card', styles.listItem)} key={item.id} variants={li}>
-          <ListItem item={item} />
+          <ListItem item={item} lists={lists} />
         </motion.li>
       ))}
     </motion.ul>

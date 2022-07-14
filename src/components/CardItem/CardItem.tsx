@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DANGER_NAME } from '../../common/constans/messages';
 import Context from '../../context/Context';
@@ -68,4 +69,4 @@ function CardItem({ startTitle, idCard, idList }: Props): JSX.Element {
   );
 }
 
-export default CardItem;
+export default observer(CardItem);

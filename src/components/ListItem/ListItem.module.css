@@ -1,3 +1,7 @@
+.listInner{
+  display: flex;
+  flex-direction: column;
+}
 .listHeader {
   position: relative;
   display: flex;

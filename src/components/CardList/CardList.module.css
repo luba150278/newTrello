@@ -1,3 +1,6 @@
+.wrap{
+  min-height: 100px;
+}
 .cardWrap {
   display: grid;
   gap: 10px;
@@ -12,4 +15,11 @@
   background: white;
   padding: 4px 0;
   border: 1px solid var(--link-color);
+}
+.cardItem:hover{
+  cursor: pointer;
+}
+.move{
+  margin-top: 60px;
+  background: gray
 }

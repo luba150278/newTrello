@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable no-console */
+import React, { useContext, useState } from 'react';
 import { RiAddCircleLine } from 'react-icons/ri';
 import cn from 'classnames';
 import { observer } from 'mobx-react-lite';
@@ -9,17 +10,28 @@ import Icon from '../Icon/Icon';
 import { IList } from '../../interfaces/ILists';
 import AddCard from '../AddCard/AddCard';
 import CardList from '../CardList/CardList';
+import { ICard } from '../../interfaces/ICard';
+import Context from '../../context/Context';
 
 interface Props {
   item: IList;
+  lists: IList[];
 }
 
-function ListItem({ item }: Props): JSX.Element {
+function ListItem({ item, lists }: Props): JSX.Element {
+  const { store } = useContext(Context);
   const [showInput, setShowInput] = useState(false);
   const cards = Object.values(item.cards);
+  const cardSort = cards.sort((a: ICard, b: ICard) => (a.position > b.position ? 1 : -1));
 
   return (
-    <div className={styles.listInner}>
+    <div
+      className={styles.listInner}
+      onDragOver={(e): void => e.preventDefault()}
+      onDrop={(): void => {
+        store.setCurrentListID(item.id);
+      }}
+    >
       <div className={styles.listHeader}>
         <DeleteElement what="list" idList={item.id} />
         {cards.length !== 0 ? (
@@ -27,8 +39,8 @@ function ListItem({ item }: Props): JSX.Element {
         ) : null}
       </div>
       <ListTitle startTitle={item.title} idList={item.id} pos={item.position} />
-
-      {cards.length !== 0 ? <CardList cards={cards} idList={item.id} /> : null}
+      <CardList cards={cardSort} idList={item.id} lists={lists} />
+      {/* {cards.length !== 0 ? <CardList cards={cardSort} idList={item.id} lists={lists} /> : null} */}
       <div className={styles.addCardWrapp} onClick={(): void => setShowInput(!showInput)}>
         <Icon
           iconChild={<RiAddCircleLine />}

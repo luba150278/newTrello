@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
 import {
@@ -17,8 +18,9 @@ import getSuccessNotify from '../functions/sucessNotify';
 import { isValidTitle } from '../functions/validTitles';
 import { IBoard } from '../interfaces/IBoard';
 import { ICard } from '../interfaces/ICard';
+// import { ICard } from '../interfaces/ICard';
 import { ICardMove } from '../interfaces/ICardMove';
-import { ILists } from '../interfaces/ILists';
+import { IList, ILists } from '../interfaces/ILists';
 import { ILoginResponse } from '../interfaces/ILoginResponse';
 import { IInputDefaultData } from '../interfaces/IUserDefaultData';
 import BoardService from '../services/BoardService';
@@ -35,6 +37,10 @@ export default class Store {
   }
 
   // ---Variants--------------
+  currentListID = 0;
+
+  currentCardPos = 0;
+
   isAuth = false;
 
   isLoading = false;
@@ -56,6 +62,14 @@ export default class Store {
   token = '123';
 
   // ---Setters--------------
+  setCurrentListID(id: number): void {
+    this.currentListID = id;
+  }
+
+  setCurrentCardPos(id: number): void {
+    this.currentCardPos = id;
+  }
+
   setUser(): void {
     this.User = localStorage.getItem('name') || '';
   }
@@ -307,10 +321,61 @@ export default class Store {
     }
   }
 
-  async moveCardInOneList(cards: ICard[], id: string, idList: number): Promise<void> {
+  async moveCardInOneList(
+    idMoveCard: number,
+    // idCurrentList: number,
+    // currentPos: number,
+    id: string,
+    lists: IList[]
+  ): Promise<void> {
     try {
+      const idCurrentList = this.currentListID;
+      const currentPos = this.currentCardPos;
       const newData: ICardMove[] = [];
-      cards.map((card, i) => newData.push({ id: card.id, position: i + 1, list_id: idList }));
+      const { cards } = lists.filter((item) => item.id === idCurrentList)[0];
+      const cardsArr = Object.values(cards);
+      const movePos = cardsArr.find((card) => card.id === idMoveCard)?.position || 0; // перемещение внутри списка
+      const idListFrom = lists
+        .filter((item) => item.id !== idCurrentList)
+        .map((list) => {
+          const listArr = Object.values(list.cards).filter((card) => card.id === idMoveCard)[0];
+          if (listArr) {
+            return list.id;
+          }
+          return 0;
+        })[0];
+
+      if (movePos !== 0) {
+        for (let i = 0; i < cardsArr.length; i++) {
+          if (cardsArr[i].id === idMoveCard) {
+            newData.push({ id: cardsArr[i].id, position: currentPos, list_id: idCurrentList });
+          } else if (cardsArr[i].position === currentPos) {
+            newData.push({ id: cardsArr[i].id, position: movePos, list_id: idCurrentList });
+          }
+        }
+      } else {
+        newData.push({ id: idMoveCard, position: currentPos, list_id: idCurrentList });
+        for (let i = 0; i < cardsArr.length; i++) {
+          if (cardsArr[i].position < currentPos) {
+            newData.push({ id: cardsArr[i].id, position: cardsArr[i].position, list_id: idCurrentList });
+          } else {
+            newData.push({ id: cardsArr[i].id, position: cardsArr[i].position + 1, list_id: idCurrentList });
+          }
+        }
+        // удаляем из перетянутого
+        if (idListFrom !== 0) {
+          const cardsOnStartList = lists.filter((item) => item.id === idListFrom)[0].cards;
+          const cardsAll = Object.values(cardsOnStartList);
+          const cardSort = cardsAll.sort((a: ICard, b: ICard) => (a.position > b.position ? 1 : -1));
+          let num = 1;
+          for (let i = 0; i < cardSort.length; i++) {
+            if (cardSort[i].id !== idMoveCard) {
+              newData.push({ id: cardSort[i].id, position: num, list_id: idListFrom });
+              num++;
+            }
+          }
+        }
+      }
       await BoardService.moveCardInOneList(newData, id);
     } catch (e) {
       this.setError(e);

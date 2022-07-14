@@ -1,0 +1,24 @@
+.dragging {
+  background: green;
+  opacity: 1;
+  padding: 6% 44%;
+  border-radius: 4px;
+  color: #000;
+  font-weight: 700;
+}
+
+.slot,
+.emptyList,
+.emptyList2 {
+  display: flex;
+  background: gray;
+  height: 60px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+.emptyList2 {
+  padding: 0;
+  margin: 0;
+}
