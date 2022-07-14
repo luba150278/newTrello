@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite';
+import cn from 'classnames';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DANGER_NAME } from '../../common/constans/messages';
 import Context from '../../context/Context';
@@ -62,7 +63,7 @@ function CardItem({ startTitle, idCard, idList }: Props): JSX.Element {
     ref: inputEl,
   };
   return (
-    <div className={styles.cardWrap}>
+    <div className={cn('card', { [styles.cardWrap] })}>
       <InputBlock inputData={inputData} />
       <DeleteElement what="card" idCard={idCard} />
     </div>

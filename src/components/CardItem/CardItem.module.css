@@ -4,6 +4,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 10px;
+  background: white;
+  padding: 4px 0;
+  border: 1px solid var(--link-color);
 }
 .cardWrap:hover input{
   cursor: pointer;
