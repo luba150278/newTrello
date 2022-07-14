@@ -10,7 +10,6 @@ import CardItem from '../CardItem/CardItem';
 import GetListContext from '../../context/GetListContext';
 import Context from '../../context/Context';
 import { IList } from '../../interfaces/ILists';
-import './CardList.css';
 
 export interface Props {
   cards: ICard[];
