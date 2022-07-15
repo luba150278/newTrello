@@ -42,17 +42,18 @@ function CardList({ cards, idList, lists }: Props): JSX.Element {
           <motion.li
             key={card.id}
             id={card.id.toString()}
-            className={styles.cardItem}
+            className={cn('card', styles.cardItem, { [styles.move]: currentPos === card.position })}
             variants={listItem}
             draggable
             onDragEnd={(): Promise<void> => saveMove()}
-            onDragEnter={(): void => setCurrentPos(card.position)}
             onDragOver={(): void => {
               store.setCurrentCardPos(card.position);
+              setCurrentPos(card.position);
             }}
             onDragStart={(): void => setIdMoveCard(card.id)}
+            // drag
+            // whileDrag={{ scale: 1.2 }}
           >
-            <div className={cn(styles.snapShoot, { [styles.move]: currentPos === card.position })} />
             <CardItem startTitle={card.title} idCard={`${card.id}`} idList={idList} />
           </motion.li>
         ))}

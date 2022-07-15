@@ -334,7 +334,7 @@ export default class Store {
       const newData: ICardMove[] = [];
       const { cards } = lists.filter((item) => item.id === idCurrentList)[0];
       const cardsArr = Object.values(cards);
-      const movePos = cardsArr.find((card) => card.id === idMoveCard)?.position || 0; // перемещение внутри списка
+      const movePos = cardsArr.find((card) => card.id === idMoveCard)?.position || 0; // movePos !== 0 перемещение внутри списка
       const idListFrom = lists
         .filter((item) => item.id !== idCurrentList)
         .map((list) => {
@@ -346,11 +346,44 @@ export default class Store {
         })[0];
 
       if (movePos !== 0) {
-        for (let i = 0; i < cardsArr.length; i++) {
-          if (cardsArr[i].id === idMoveCard) {
-            newData.push({ id: cardsArr[i].id, position: currentPos, list_id: idCurrentList });
-          } else if (cardsArr[i].position === currentPos) {
-            newData.push({ id: cardsArr[i].id, position: movePos, list_id: idCurrentList });
+        if (movePos !== currentPos) {
+          for (let i = 0; i < cardsArr.length; i++) {
+            if (cardsArr[i].id === idMoveCard) {
+              newData.push({ id: cardsArr[i].id, position: currentPos, list_id: idCurrentList });
+            } else if (cardsArr[i].position === currentPos) {
+              if (Math.abs(currentPos - movePos) === 1) {
+                newData.push({
+                  id: cardsArr[i].id,
+                  position: movePos,
+                  list_id: idCurrentList,
+                });
+              } else {
+                newData.push({
+                  id: cardsArr[i].id,
+                  position: movePos > currentPos ? currentPos + 1 : currentPos - 1,
+                  list_id: idCurrentList,
+                });
+              }
+            } else if (Math.abs(currentPos - movePos) !== 1) {
+              let pos = cardsArr[i].position;
+              if (movePos > currentPos && pos > currentPos && pos < movePos) {
+                pos++;
+                newData.push({
+                  id: cardsArr[i].id,
+                  position: pos,
+                  list_id: idCurrentList,
+                });
+              }
+
+              if (movePos < currentPos && pos < currentPos && pos > movePos) {
+                pos--;
+                newData.push({
+                  id: cardsArr[i].id,
+                  position: pos,
+                  list_id: idCurrentList,
+                });
+              }
+            }
           }
         }
       } else {

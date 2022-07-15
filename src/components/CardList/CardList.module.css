@@ -9,26 +9,18 @@
 }
 
 .cardItem {
-  display: grid;
-  grid-auto-flow: row;
-  gap: 10px
- 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 4px 0;
+  border: 1px solid var(--link-color);
 }
 .cardItem:hover{
   cursor: pointer;
 }
 .move{
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  margin: 10px 0;
-}
-.move:before{
-  /* margin-top: 60px; */
-  content: "";
+  margin-top: 60px;
   background: gray;
-  width: 100%;
-  height: 40px;
-  order: 1;
+  /* // transform: translateX(180px) rotate(45deg); */
 }

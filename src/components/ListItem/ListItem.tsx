@@ -40,8 +40,10 @@ function ListItem({ item, lists }: Props): JSX.Element {
       </div>
       <ListTitle startTitle={item.title} idList={item.id} pos={item.position} />
       <CardList cards={cardSort} idList={item.id} lists={lists} />
-      {/* {cards.length !== 0 ? <CardList cards={cardSort} idList={item.id} lists={lists} /> : null} */}
-      <div className={styles.addCardWrapp} onClick={(): void => setShowInput(!showInput)}>
+      <div
+        className={cn(styles.addCardWrapp, { [styles.hidden]: showInput })}
+        onClick={(): void => setShowInput(!showInput)}
+      >
         <Icon
           iconChild={<RiAddCircleLine />}
           styles={{

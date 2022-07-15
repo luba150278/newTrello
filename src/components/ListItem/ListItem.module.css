@@ -1,6 +1,7 @@
 .listInner{
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  height: 100%;
 }
 .listHeader {
   position: relative;
