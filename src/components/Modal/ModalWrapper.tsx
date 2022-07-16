@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/jsx-no-useless-fragment */
 
 import { observer } from 'mobx-react-lite';
@@ -14,15 +15,23 @@ import styles from './ModalWrapper.module.css';
 
 interface ModalWrapperProps {
   isCard: boolean;
-  card: ICard;
+  cardId: string;
 }
 
-function ModalWrapper({ isCard, card }: ModalWrapperProps): JSX.Element {
+function ModalWrapper({ isCard, cardId }: ModalWrapperProps): JSX.Element {
   const { store } = useContext(Context);
   if (!store.isModal) {
     return <></>;
   }
-  const headerTitle = isCard ? card.title : ADD_BOARD_TITLE;
+  const card: ICard = {
+    id: 0,
+    title: 'cccccccccc',
+    description: 'ddddddddddddd',
+    position: 0,
+    users: [],
+  };
+  console.log(cardId);
+  const headerTitle = isCard ? 'title' : ADD_BOARD_TITLE;
   const main = (
     <div className={styles.desktopModalContainer}>
       <div className={styles.close}>

@@ -7,6 +7,9 @@
   color: var(--accent-color);
   fill: var(--accent-color);
 }
+.iconPencil:hover {
+  color: var(--accent-color); 
+}
 .icon.active {
   color: var(--contrast-color);
   fill: var(--contrast-color);

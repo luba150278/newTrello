@@ -8,6 +8,17 @@ export const ul = {
   },
 };
 
+export const div = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      duration: 1,
+      staggerChildren: 0.2,
+    },
+  },
+};
+
 export const ulCard = {
   hidden: { opacity: 0 },
   show: {

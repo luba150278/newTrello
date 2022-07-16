@@ -2,13 +2,16 @@
   display: grid;
   grid-template-rows: auto auto 1fr auto;
   height: 100%;
+  position: relative;
 }
 .listHeader {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px
+  justify-content: flex-end;
+}
+.iconWrap{
+  cursor: pointer;
 }
 
 .addCardWrapp {

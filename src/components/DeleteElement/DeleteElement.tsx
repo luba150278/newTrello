@@ -14,39 +14,43 @@ export interface IProps {
   what: 'board' | 'list' | 'card';
   idList?: number;
   idCard?: string;
+  isTitle?: boolean;
 }
 
-function DeleteElement({ what, idList = 0, idCard = '' }: IProps): JSX.Element {
+function DeleteElement({ isTitle = false, what, idList = 0, idCard = '' }: IProps): JSX.Element {
   const history = useNavigate();
   const { store } = useContext(Context);
-  const { id, getList } = useContext(GetListContext);
+  const { id, getLists } = useContext(GetListContext);
 
   async function deleteList(): Promise<void> {
     await store.deleteList(id, `${idList}`);
-    await getList();
+    await getLists();
   }
 
   async function deleteCard(): Promise<void> {
     await store.deleteCard(id, idCard);
-    await getList();
+    await getLists();
+  }
+
+  async function deleteWrap(): Promise<void> {
+    if (what === 'board') {
+      await store.deleteBoard(id);
+      history('/');
+    }
+    if (what === 'list') {
+      await deleteList();
+    }
+    if (what === 'card') {
+      await deleteCard();
+    }
   }
 
   return (
     <div
-      className={cn(styles.trashDiv, { [styles.trashCard]: what === 'list' })}
-      onClick={async (): Promise<void> => {
-        if (what === 'board') {
-          store.deleteBoard(id);
-          history('/');
-        }
-        if (what === 'list') {
-          await deleteList();
-        }
-        if (what === 'card') {
-          await deleteCard();
-        }
-      }}
+      className={cn(styles.trashDiv, { [styles.trashCard]: what === 'list', [styles.trashWithTitle]: isTitle })}
+      onClick={async (): Promise<void> => deleteWrap()}
     >
+      {isTitle ? <p>Delete</p> : null}
       <Icon iconChild={<FaRegTrashAlt />} styles={{ className: 'icon deleteIcon', size: '15' }} />
     </div>
   );

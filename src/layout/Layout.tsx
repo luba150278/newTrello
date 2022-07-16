@@ -2,7 +2,6 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { LayoutProps } from './Layout.props';
 import styles from './Layout.module.css';
-// import cn from "classnames";
 import { Footer } from './Footer/Footer';
 import Header from './Header/Header';
 

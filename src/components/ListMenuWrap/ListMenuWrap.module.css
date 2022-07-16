@@ -1,0 +1,17 @@
+.menuWrap {
+  display: grid;
+  grid-auto-flow: row;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  background: white;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 4px 4px 8px 0px var(--box-shadow);
+  opacity: 1;
+}
+.hidden {
+  opacity: 0;
+  z-index: -2;
+}

@@ -1,0 +1,20 @@
+.iconWrap{
+  cursor: pointer;
+}
+
+.menuItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 6px;
+  border-bottom: 1px solid var(--box-shadow);
+}
+.menuItem:hover{
+  cursor: pointer;
+  color: var(--accent-color);
+  background: var(--box-shadow);
+}
+.menuItem:last-child{
+  border-bottom: none;
+}

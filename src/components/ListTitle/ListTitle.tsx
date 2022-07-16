@@ -15,7 +15,7 @@ interface Props {
 
 function ListTitle({ startTitle, idList, pos }: Props): JSX.Element {
   const { store } = useContext(Context);
-  const { id, getList } = useContext(GetListContext);
+  const { id, getLists } = useContext(GetListContext);
   const inputEl = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState(startTitle);
   useEffect(() => {
@@ -34,7 +34,7 @@ function ListTitle({ startTitle, idList, pos }: Props): JSX.Element {
       return;
     }
     await store.editListTitle(title, id, pos, `${idList}`);
-    await getList();
+    await getLists();
   }
   const keyPressHandler = (event: React.KeyboardEvent): void => {
     if (event.key === 'Enter' && startTitle !== title) {

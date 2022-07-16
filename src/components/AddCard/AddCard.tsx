@@ -14,13 +14,13 @@ export interface Props {
 
 function AddCard({ position, idList }: Props): JSX.Element {
   const { store } = useContext(Context);
-  const { id, getList } = useContext(GetListContext);
+  const { id, getLists } = useContext(GetListContext);
   const [title, setTitle] = useState('');
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
 
   async function add(): Promise<void> {
     await store.addCard(title, id, idList, position);
-    await getList();
+    await getLists();
   }
   const keyPressHandler = async (event: React.KeyboardEvent): Promise<void> => {
     if (event.key === 'Enter') {

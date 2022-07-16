@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { TbPencil } from 'react-icons/tb';
 import { DANGER_NAME } from '../../common/constans/messages';
 import Context from '../../context/Context';
 import GetListContext from '../../context/GetListContext';
@@ -7,6 +8,7 @@ import getNotify from '../../functions/notify';
 import { isValidTitle } from '../../functions/validTitles';
 import { IInput } from '../../interfaces/IInput';
 import DeleteElement from '../DeleteElement/DeleteElement';
+import Icon from '../Icon/Icon';
 import InputBlock from '../InputBlock/InputBlock';
 import styles from './CardItem.module.css';
 
@@ -18,7 +20,7 @@ export interface Props {
 
 function CardItem({ startTitle, idCard, idList }: Props): JSX.Element {
   const { store } = useContext(Context);
-  const { id, getList } = useContext(GetListContext);
+  const { id, getLists } = useContext(GetListContext);
   const inputEl = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState(startTitle);
   useEffect(() => {
@@ -37,7 +39,7 @@ function CardItem({ startTitle, idCard, idList }: Props): JSX.Element {
       return;
     }
     await store.editCardTitle(title, id, idList, idCard);
-    await getList();
+    await getLists();
   }
   const keyPressHandler = (event: React.KeyboardEvent): void => {
     if (event.key === 'Enter' && startTitle !== title) {
@@ -65,6 +67,16 @@ function CardItem({ startTitle, idCard, idList }: Props): JSX.Element {
     <div className={styles.cardWrap}>
       <InputBlock inputData={inputData} />
       <DeleteElement what="card" idCard={idCard} />
+      <div onClick={(): void => store.setModal(true)}>
+        <Icon
+          iconChild={<TbPencil />}
+          styles={{
+            className: 'iconPencil',
+            size: '20',
+            title: 'Card menu',
+          }}
+        />
+      </div>
     </div>
   );
 }

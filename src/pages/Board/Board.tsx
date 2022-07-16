@@ -8,6 +8,7 @@ import AddList from '../../components/AddList/AddList';
 import LinkToMain from '../../components/LinkToMain/Link';
 import Lists from '../../components/Lists/Lists';
 import Loader from '../../components/Loader/Loader';
+import ModalWrapper from '../../components/Modal/ModalWrapper';
 import Context from '../../context/Context';
 import { GLContextProvider } from '../../context/GetListContext';
 import { IList } from '../../interfaces/ILists';
@@ -27,7 +28,7 @@ function Board(): JSX.Element {
     setStartTitle(data?.title || '');
   }, [boards]);
 
-  async function getList(): Promise<void> {
+  async function getLists(): Promise<void> {
     const res = await store.getLists(`${id}`);
     if (res) {
       if (res.lists.length === 0) {
@@ -40,7 +41,7 @@ function Board(): JSX.Element {
     }
   }
   useEffect(() => {
-    getList();
+    getLists();
   }, [id]);
   if (store.isLoading) {
     return (
@@ -51,14 +52,15 @@ function Board(): JSX.Element {
   }
 
   return (
-    <GLContextProvider value={{ getList, id }}>
-      <section>
-        <Container>
+    <GLContextProvider value={{ getLists, id }}>
+      <section onClick={(): void => store.setModal(false)}>
+        <Container onClick={(e): void => e.stopPropagation()}>
           <LinkToMain />
           <BoardTitle startTitle={startTitle} />
           <AddList position={pos} />
           <Lists lists={lists} />
         </Container>
+        <ModalWrapper isCard cardId="0" />
       </section>
     </GLContextProvider>
   );

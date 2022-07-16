@@ -29,16 +29,7 @@ function Boards({ boards }: Props): JSX.Element {
         ))}
       </motion.ul>
 
-      <ModalWrapper
-        isCard={false}
-        card={{
-          id: 0,
-          position: 0,
-          title: '',
-          description: '',
-          users: [0],
-        }}
-      />
+      <ModalWrapper isCard={false} cardId="0" />
     </>
   );
 }

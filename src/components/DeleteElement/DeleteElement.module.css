@@ -6,6 +6,11 @@
   align-items: center;
   justify-content: center;
 }
+.trashWithTitle{
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
 
 .trashDiv:hover {
   cursor: pointer;

@@ -2,7 +2,7 @@ import React from 'react';
 
 const GetListContext = React.createContext({
   id: '',
-  getList: () => {},
+  getLists: () => {},
 });
 export const GLContextProvider = GetListContext.Provider;
 export default GetListContext;

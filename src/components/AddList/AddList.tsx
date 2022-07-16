@@ -1,4 +1,3 @@
-
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
@@ -14,13 +13,13 @@ export interface Props {
 
 function AddList({ position }: Props): JSX.Element {
   const { store } = useContext(Context);
-  const { id, getList } = useContext(GetListContext);
+  const { id, getLists } = useContext(GetListContext);
   const [title, setTitle] = useState('');
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
 
   async function add(): Promise<void> {
     await store.addList(title, id, position);
-    await getList();
+    await getLists();
   }
   const keyPressHandler = async (event: React.KeyboardEvent): Promise<void> => {
     if (event.key === 'Enter') {

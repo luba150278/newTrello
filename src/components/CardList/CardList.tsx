@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import cn from 'classnames';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
+import { useInView } from 'react-intersection-observer';
 import { ICard } from '../../interfaces/ICard';
 import styles from './CardList.module.css';
 import { listItem, ulCard } from '../../common/constans/motionList';
@@ -19,17 +20,25 @@ export interface Props {
 
 function CardList({ cards, idList, lists }: Props): JSX.Element {
   const { store } = useContext(Context);
-  const { id, getList } = useContext(GetListContext);
+  const { id, getLists } = useContext(GetListContext);
   const [idMoveCard, setIdMoveCard] = useState(0);
   const [currentPos, setCurrentPos] = useState(0);
   // const [isMove, setIsMove] = useState(false);
 
   async function saveMove(): Promise<void> {
     await store.moveCardInOneList(idMoveCard, id, lists);
-    await getList();
+    await getLists();
     setIdMoveCard(0);
   }
-
+  const control = useAnimation();
+  const [ref, inView] = useInView();
+  useEffect(() => {
+    if (inView) {
+      control.start('visible');
+    } else {
+      control.start('hidden');
+    }
+  }, [control, inView]);
   return (
     <div
       // onDragOver={(): void => {
@@ -37,7 +46,7 @@ function CardList({ cards, idList, lists }: Props): JSX.Element {
       // }}
       className={styles.wrap}
     >
-      <motion.ul className={styles.cardWrap} variants={ulCard} initial="hidden" animate="show">
+      <motion.ul className={styles.cardWrap} variants={ulCard} initial="hidden" animate="show" ref={ref}>
         {cards.map((card) => (
           <motion.li
             key={card.id}
