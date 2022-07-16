@@ -11,9 +11,10 @@ interface Props {
   toggleMenu: () => void;
   idList: number;
   sortCards: (paramSort: number) => void;
+  cardsLength: number;
 }
 
-function ListMenuWrap({ isVisible, toggleMenu, idList, sortCards }: Props): JSX.Element {
+function ListMenuWrap({ isVisible, toggleMenu, idList, sortCards, cardsLength }: Props): JSX.Element {
   const [isMainMenu, setIsMainMenu] = useState(true);
   const openSecondMenu = (): void => {
     setIsMainMenu(!isMainMenu);
@@ -26,7 +27,12 @@ function ListMenuWrap({ isVisible, toggleMenu, idList, sortCards }: Props): JSX.
       animate={isVisible ? 'show' : 'hidden'}
     >
       {isMainMenu ? (
-        <ListMenuMain idList={idList} toggleMenu={toggleMenu} openSecondMenu={openSecondMenu} />
+        <ListMenuMain
+          idList={idList}
+          toggleMenu={toggleMenu}
+          openSecondMenu={openSecondMenu}
+          cardsLength={cardsLength}
+        />
       ) : (
         <ListMenuSecond idList={idList} toggleMenu={toggleMenu} openSecondMenu={openSecondMenu} sortCards={sortCards} />
       )}

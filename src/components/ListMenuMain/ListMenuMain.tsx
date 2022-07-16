@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { motion } from 'framer-motion';
 import React from 'react';
 import cn from 'classnames';
@@ -12,9 +13,10 @@ interface Props {
   idList: number;
   toggleMenu: () => void;
   openSecondMenu: () => void;
+  cardsLength: number;
 }
 
-function ListMenuMain({ idList, toggleMenu, openSecondMenu }: Props): JSX.Element {
+function ListMenuMain({ idList, toggleMenu, openSecondMenu, cardsLength }: Props): JSX.Element {
   return (
     <>
       <motion.li variants={listItem} className={cn(styles.headerMenu, styles.menuItem)} onClick={toggleMenu}>
@@ -32,18 +34,20 @@ function ListMenuMain({ idList, toggleMenu, openSecondMenu }: Props): JSX.Elemen
       <motion.li variants={listItem} className={cn(styles.deleteWrap, styles.menuItem)}>
         <DeleteElement isTitle idList={idList} what="list" />
       </motion.li>
-      <motion.li variants={listItem} className={cn(styles.sort, styles.menuItem)} onClick={openSecondMenu}>
-        <p>Sort by</p>
-        <div onClick={openSecondMenu} className={styles.closeMenu}>
-          <Icon
-            iconChild={<CgMoreAlt />}
-            styles={{
-              className: 'icon',
-              size: '20',
-            }}
-          />
-        </div>
-      </motion.li>
+      {cardsLength > 1 ? (
+        <motion.li variants={listItem} className={cn(styles.sort, styles.menuItem)} onClick={openSecondMenu}>
+          <p>Sort by</p>
+          <div onClick={openSecondMenu} className={styles.closeMenu}>
+            <Icon
+              iconChild={<CgMoreAlt />}
+              styles={{
+                className: 'icon',
+                size: '20',
+              }}
+            />
+          </div>
+        </motion.li>
+      ) : null}
     </>
   );
 }
