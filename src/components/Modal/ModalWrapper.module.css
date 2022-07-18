@@ -1,7 +1,7 @@
 .desktopModalContainer {
   border-radius: 7px;
   box-shadow: 0 0 32px rgba(0, 0, 0, 0.5);
-  padding: 40px;
+  padding: 20px;
   width: 450px;
   font-size: 26px;
   background-color: #ffffff;
@@ -19,7 +19,7 @@
 .header {
   color: #25306c;
   font-size: 26px;
-  line-height: 1em;
+  line-height: 1;
   font-weight: bold;
   margin: 5px 0 10px;
   text-align: center;
@@ -29,7 +29,7 @@
 .close {
   position: absolute;
   top: 0;
-  left: 80%;
+  right: 20px;
 }
 .close:hover {
   cursor: pointer;

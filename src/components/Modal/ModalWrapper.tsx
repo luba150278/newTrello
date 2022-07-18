@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-no-useless-fragment */
 
@@ -6,7 +7,7 @@ import React, { useContext } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { ADD_BOARD_TITLE } from '../../common/constans/messages';
 import Context from '../../context/Context';
-import { ICard } from '../../interfaces/ICard';
+import { IList } from '../../interfaces/ILists';
 import BoardCreate from '../BoardCreate/BoardCreate';
 import CardDisplay from '../CardDisplay/CardDisplay';
 import Icon from '../Icon/Icon';
@@ -15,23 +16,15 @@ import styles from './ModalWrapper.module.css';
 
 interface ModalWrapperProps {
   isCard: boolean;
-  cardId: string;
+  lists?: IList[];
+  id?: string;
 }
 
-function ModalWrapper({ isCard, cardId }: ModalWrapperProps): JSX.Element {
+function ModalWrapper({ isCard, lists = [], id = '0' }: ModalWrapperProps): JSX.Element {
   const { store } = useContext(Context);
   if (!store.isModal) {
     return <></>;
   }
-  const card: ICard = {
-    id: 0,
-    title: 'cccccccccc',
-    description: 'ddddddddddddd',
-    position: 0,
-    users: [],
-  };
-  console.log(cardId);
-  const headerTitle = isCard ? 'title' : ADD_BOARD_TITLE;
   const main = (
     <div className={styles.desktopModalContainer}>
       <div className={styles.close}>
@@ -40,15 +33,15 @@ function ModalWrapper({ isCard, cardId }: ModalWrapperProps): JSX.Element {
             iconChild={<FaTimes />}
             styles={{
               className: 'icon',
-              size: '25',
+              size: '20',
             }}
             isToolTip={false}
             toolTipText=""
           />
         </div>
       </div>
-      <h3 className={styles.header}>{headerTitle}</h3>
-      {!isCard ? <BoardCreate /> : <CardDisplay card={card} />}
+      {!isCard ? <h3 className={styles.header}>{ADD_BOARD_TITLE}</h3> : null}
+      {!isCard ? <BoardCreate /> : <CardDisplay card={store.card} listID={store.currentListID} lists={lists} id={id} />}
     </div>
   );
 

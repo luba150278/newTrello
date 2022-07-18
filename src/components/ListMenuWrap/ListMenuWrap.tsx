@@ -1,40 +1,34 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import cn from 'classnames';
 import { motion } from 'framer-motion';
 import styles from './ListMenuWrap.module.css';
 import { div } from '../../common/constans/motionList';
 import ListMenuMain from '../ListMenuMain/ListMenuMain';
 import ListMenuSecond from '../ListMenuSecond/ListMenuSecond';
+import ListMenuContext from '../../context/ListMenuContext';
 
-interface Props {
-  isVisible: boolean;
-  toggleMenu: () => void;
-  idList: number;
-  sortCards: (paramSort: number) => void;
-  cardsLength: number;
-}
-
-function ListMenuWrap({ isVisible, toggleMenu, idList, sortCards, cardsLength }: Props): JSX.Element {
+function ListMenuWrap(): JSX.Element {
+  const { showListMenu, toggleListMenu, idList, cardsLength } = useContext(ListMenuContext);
   const [isMainMenu, setIsMainMenu] = useState(true);
   const openSecondMenu = (): void => {
     setIsMainMenu(!isMainMenu);
   };
   return (
     <motion.ul
-      className={cn(styles.menuWrap, { [styles.hidden]: !isVisible })}
+      className={cn(styles.menuWrap, { [styles.hidden]: !showListMenu })}
       variants={div}
       initial="hidden"
-      animate={isVisible ? 'show' : 'hidden'}
+      animate={showListMenu ? 'show' : 'hidden'}
     >
       {isMainMenu ? (
         <ListMenuMain
           idList={idList}
-          toggleMenu={toggleMenu}
+          toggleListMenu={toggleListMenu}
           openSecondMenu={openSecondMenu}
           cardsLength={cardsLength}
         />
       ) : (
-        <ListMenuSecond idList={idList} toggleMenu={toggleMenu} openSecondMenu={openSecondMenu} sortCards={sortCards} />
+        <ListMenuSecond openSecondMenu={openSecondMenu} />
       )}
     </motion.ul>
   );

@@ -29,7 +29,7 @@ function Boards({ boards }: Props): JSX.Element {
         ))}
       </motion.ul>
 
-      <ModalWrapper isCard={false} cardId="0" />
+      <ModalWrapper isCard={false} />
     </>
   );
 }

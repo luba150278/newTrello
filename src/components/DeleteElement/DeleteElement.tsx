@@ -9,6 +9,7 @@ import Context from '../../context/Context';
 import Icon from '../Icon/Icon';
 import styles from './DeleteElement.module.css';
 import GetListContext from '../../context/GetListContext';
+import ListMenuContext from '../../context/ListMenuContext';
 
 export interface IProps {
   what: 'board' | 'list' | 'card';
@@ -21,6 +22,7 @@ function DeleteElement({ isTitle = false, what, idList = 0, idCard = '' }: IProp
   const history = useNavigate();
   const { store } = useContext(Context);
   const { id, getLists } = useContext(GetListContext);
+  const { lists } = useContext(ListMenuContext);
 
   async function deleteList(): Promise<void> {
     await store.deleteList(id, `${idList}`);
@@ -28,7 +30,7 @@ function DeleteElement({ isTitle = false, what, idList = 0, idCard = '' }: IProp
   }
 
   async function deleteCard(): Promise<void> {
-    await store.deleteCard(id, idCard);
+    await store.deleteCard(id, idCard, idList, lists);
     await getLists();
   }
 

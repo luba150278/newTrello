@@ -1,14 +1,29 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
+import { ICard } from '../interfaces/ICard';
+import { IList } from '../interfaces/ILists';
 
-const ListMenuContext = React.createContext({
-  isVisible: false,
-  toggleMenu: () => {},
-  sortCards: () => {},
+interface Props {
+  showListMenu: boolean;
+  toggleListMenu: () => void;
+  sortCards: (params: number) => void;
+  idList: number;
+  listTitle: string;
+  listPosition: number;
+  cardsLength: number;
+  cards: ICard[];
+  lists: IList[];
+}
+const ListMenuContext = React.createContext<Props>({
+  showListMenu: false,
+  toggleListMenu: () => {},
+  sortCards: (params: number) => {},
   idList: 0,
   listTitle: '',
   listPosition: 1,
   cardsLength: 0,
-  cards: [{ id: 0, title: '', description: '', position: 0, users: [] }],
+  cards: [],
+  lists: [],
 });
 export const ListMenuProvider = ListMenuContext.Provider;
 export default ListMenuContext;

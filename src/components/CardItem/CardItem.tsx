@@ -1,73 +1,39 @@
+/* eslint-disable no-console */
 import { observer } from 'mobx-react-lite';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { TbPencil } from 'react-icons/tb';
-import { DANGER_NAME } from '../../common/constans/messages';
-import Context from '../../context/Context';
-import GetListContext from '../../context/GetListContext';
-import getNotify from '../../functions/notify';
-import { isValidTitle } from '../../functions/validTitles';
-import { IInput } from '../../interfaces/IInput';
-import DeleteElement from '../DeleteElement/DeleteElement';
+import ListMenuContext from '../../context/ListMenuContext';
+import { ICard } from '../../interfaces/ICard';
+import CardMenu from '../CardMenu/CardMenu';
+import CardTitle from '../CardTitle/CardTitle';
+// import DeleteElement from '../DeleteElement/DeleteElement';
 import Icon from '../Icon/Icon';
-import InputBlock from '../InputBlock/InputBlock';
 import styles from './CardItem.module.css';
 
 export interface Props {
-  startTitle: string;
-  idCard: string;
-  idList: number;
+  card: ICard;
+  showMenu: boolean;
+  openMenu: (idCard: string, listId: number) => void;
 }
 
-function CardItem({ startTitle, idCard, idList }: Props): JSX.Element {
-  const { store } = useContext(Context);
-  const { id, getLists } = useContext(GetListContext);
-  const inputEl = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState(startTitle);
-  useEffect(() => {
-    setTitle(startTitle);
-  }, [startTitle]);
-
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
-
-  function checkValid(): boolean {
-    const validTitle = isValidTitle(title);
-    return validTitle;
-  }
-  async function update(): Promise<void> {
-    if (!checkValid()) {
-      getNotify(DANGER_NAME);
-      return;
-    }
-    await store.editCardTitle(title, id, idList, idCard);
-    await getLists();
-  }
-  const keyPressHandler = (event: React.KeyboardEvent): void => {
-    if (event.key === 'Enter' && startTitle !== title) {
-      update();
-    }
+function CardItem({ card, showMenu, openMenu }: Props): JSX.Element {
+  const { idList } = useContext(ListMenuContext);
+  const [closeMenu, setCloseMenu] = useState(true);
+  const toggleCloseMenu = (): void => {
+    setCloseMenu(!closeMenu);
   };
 
-  const blurHandler = (): void => {
-    if (startTitle !== title) {
-      update();
-    }
-  };
-
-  const inputData: IInput = {
-    title,
-    ph: title,
-    changeHandler,
-    onKeyPress: keyPressHandler,
-    onBlur: blurHandler,
-    cln: 'input-card-row cardTitle',
-    clni: 'h1 cardData',
-    ref: inputEl,
-  };
   return (
     <div className={styles.cardWrap}>
-      <InputBlock inputData={inputData} />
-      <DeleteElement what="card" idCard={idCard} />
-      <div onClick={(): void => store.setModal(true)}>
+      <CardTitle card={card} />
+      <div
+        onClick={(): void => {
+          toggleCloseMenu();
+          openMenu(`${card.id}`, idList);
+        }}
+        className={styles.cardMenuIconWrap}
+        id={`${card.id}`}
+      >
         <Icon
           iconChild={<TbPencil />}
           styles={{
@@ -77,6 +43,8 @@ function CardItem({ startTitle, idCard, idList }: Props): JSX.Element {
           }}
         />
       </div>
+      {card.description !== '' ? <p>'xxx'</p> : null}
+      {showMenu && !closeMenu ? <CardMenu card={card} idList={idList} /> : null}
     </div>
   );
 }

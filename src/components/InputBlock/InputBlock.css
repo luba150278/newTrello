@@ -30,7 +30,10 @@
   font-size: 1.2rem;
   color: var(--fontcolor);
 }
-
+.cardDataModal{
+  font-size: 26px;
+  font-weight: bold;
+}
 @media screen and (max-width: 640px) {
   .h1 {
     width: 100%;

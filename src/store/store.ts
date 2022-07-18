@@ -49,7 +49,7 @@ export default class Store {
 
   boards = [] as IBoard[];
 
-  // lists = { users: [], lists: [] } as ILists;
+  lists = [] as IList[];
 
   defaultData = { email: '', password: '' } as IInputDefaultData;
 
@@ -61,7 +61,13 @@ export default class Store {
 
   token = '123';
 
+  card: ICard = { id: 0, position: 0, title: '', description: '', users: [] };
+
   // ---Setters--------------
+  setCard(card: ICard): void {
+    this.card = card;
+  }
+
   setCurrentListID(id: number): void {
     this.currentListID = id;
   }
@@ -107,6 +113,10 @@ export default class Store {
 
   setBoard(title: string): void {
     this.boardTitle = title;
+  }
+
+  setLists(lists: IList[]): void {
+    this.lists = lists;
   }
 
   // --------------Functions------------------
@@ -242,7 +252,7 @@ export default class Store {
     try {
       this.setLoading(true);
       const response = await BoardService.getLists(id);
-      // this.setLists(response.data);
+      // this.setLists(response.data.lists);
       return response.data;
     } catch (e) {
       this.setError(e);
@@ -295,11 +305,24 @@ export default class Store {
     }
   }
 
-  async deleteCard(id: string, idCard: string): Promise<void> {
+  async deleteCard(id: string, idCard: string, idList: number, lists: IList[]): Promise<void> {
     try {
+      const newData: ICardMove[] = [];
       const response = await BoardService.deleteCard(id, idCard);
       if (response.data.result === 'Deleted') {
         getSuccessNotify(SUCCESS_CARD_DELETE);
+        // after deleting card - change positions remaining cards
+        const { cards } = lists.filter((item) => item.id === idList)[0];
+        const cardsArr = Object.values(cards).sort((a: ICard, b: ICard) => (a.position > b.position ? 1 : -1));
+        if (cardsArr.length > 0) {
+          const cardsFilter = cardsArr.filter((card) => card.id !== Number(idCard));
+          let num = 1;
+          for (let i = 0; i < cardsFilter.length; i++) {
+            newData.push({ id: cardsFilter[i].id, position: num, list_id: idList });
+            num++;
+          }
+          await BoardService.moveCardInOneList(newData, id);
+        }
       }
     } catch (e) {
       this.setError(e);
@@ -308,11 +331,19 @@ export default class Store {
     }
   }
 
-  async editCardTitle(title: string, id: string, idList: number, idCard: string): Promise<void> {
+  async editCardTitle(title: string, id: string, idList: number, idCard: string, lists: IList[]): Promise<void> {
     try {
       const response = await BoardService.editCardTitle(title, id, idList, idCard);
       if (response.data.result === 'Updated') {
         getSuccessNotify(EDIT_CARD);
+        await this.getLists(id);
+        const { cards } = lists.filter((item) => item.id === idList)[0];
+        const cardsArr = Object.values(cards);
+        const card = cardsArr.find((item) => item.id === Number(idCard));
+        if (card) {
+          card.title = title;
+          this.setCard(card);
+        }
       }
     } catch (e) {
       this.setError(e);

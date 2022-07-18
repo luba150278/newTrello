@@ -1,0 +1,27 @@
+.cardMenuWrap {
+  position: absolute;
+  top: 0;
+  right: -70%;
+  z-index: 2;
+}
+.cardMenuList {
+  display: grid;
+  gap: 4px;
+  grid-auto-flow: row;
+}
+.cardMenuItem {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  align-items: center;
+  padding: 4px 10px;
+  transition: all 0.2s ease-in;
+  font-size: 14px;
+}
+.cardMenuItem:hover{
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.05);
+}

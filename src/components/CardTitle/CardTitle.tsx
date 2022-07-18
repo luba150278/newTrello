@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable react/require-default-props */
+import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DANGER_NAME } from '../../common/constans/messages';
 import Context from '../../context/Context';
@@ -5,18 +8,27 @@ import GetListContext from '../../context/GetListContext';
 import ListMenuContext from '../../context/ListMenuContext';
 import getNotify from '../../functions/notify';
 import { isValidTitle } from '../../functions/validTitles';
+import { ICard } from '../../interfaces/ICard';
 import { IInput } from '../../interfaces/IInput';
+import { IList } from '../../interfaces/ILists';
 import InputBlock from '../InputBlock/InputBlock';
 
-function ListTitle(): JSX.Element {
+interface Props {
+  card: ICard;
+  isModal?: boolean;
+  listID?: number;
+  lists?: IList[];
+}
+function CardTitle({ card, isModal = false, listID = 0, lists = [] }: Props): JSX.Element {
   const { store } = useContext(Context);
-  const { listTitle, idList, listPosition } = useContext(ListMenuContext);
+  const { idList } = useContext(ListMenuContext);
   const { id, getLists } = useContext(GetListContext);
   const inputEl = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState(listTitle);
+  const [title, setTitle] = useState(store.card.title);
+
   useEffect(() => {
-    setTitle(listTitle);
-  }, [listTitle]);
+    setTitle(card.title);
+  }, [card.title]);
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
 
@@ -29,17 +41,17 @@ function ListTitle(): JSX.Element {
       getNotify(DANGER_NAME);
       return;
     }
-    await store.editListTitle(title, id, listPosition, `${idList}`);
+    await store.editCardTitle(title, id, idList === 0 ? listID : idList, `${card.id}`, lists);
     await getLists();
   }
   const keyPressHandler = (event: React.KeyboardEvent): void => {
-    if (event.key === 'Enter' && listTitle !== title) {
+    if (event.key === 'Enter' && card.title !== title) {
       update();
     }
   };
 
   const blurHandler = (): void => {
-    if (listTitle !== title) {
+    if (card.title !== title) {
       update();
     }
   };
@@ -49,11 +61,11 @@ function ListTitle(): JSX.Element {
     changeHandler,
     onKeyPress: keyPressHandler,
     onBlur: blurHandler,
-    cln: 'input-card-row list-title',
-    clni: 'h1',
+    cln: 'input-card-row cardTitle',
+    clni: isModal ? 'h1 cardDataModal' : 'h1 cardData',
     ref: inputEl,
   };
   return <InputBlock inputData={inputData} />;
 }
 
-export default ListTitle;
+export default observer(CardTitle);

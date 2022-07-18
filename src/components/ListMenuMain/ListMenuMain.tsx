@@ -11,17 +11,17 @@ import DeleteElement from '../DeleteElement/DeleteElement';
 
 interface Props {
   idList: number;
-  toggleMenu: () => void;
+  toggleListMenu: () => void;
   openSecondMenu: () => void;
   cardsLength: number;
 }
 
-function ListMenuMain({ idList, toggleMenu, openSecondMenu, cardsLength }: Props): JSX.Element {
+function ListMenuMain({ idList, toggleListMenu, openSecondMenu, cardsLength }: Props): JSX.Element {
   return (
     <>
-      <motion.li variants={listItem} className={cn(styles.headerMenu, styles.menuItem)} onClick={toggleMenu}>
+      <motion.li variants={listItem} className={cn(styles.headerMenu, styles.menuItem)} onClick={toggleListMenu}>
         <p>List actions</p>
-        <div onClick={toggleMenu} className={styles.closeMenu}>
+        <div onClick={toggleListMenu} className={styles.closeMenu}>
           <Icon
             iconChild={<IoMdClose />}
             styles={{

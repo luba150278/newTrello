@@ -36,6 +36,7 @@ function Board(): JSX.Element {
       } else {
         const arrLists: IList[] = Object.values(Object.values(res)[2]);
         setLists(arrLists);
+        store.setLists(arrLists);
         setPos(arrLists.length);
       }
     }
@@ -60,7 +61,7 @@ function Board(): JSX.Element {
           <AddList position={pos} />
           <Lists lists={lists} />
         </Container>
-        <ModalWrapper isCard cardId="0" />
+        <ModalWrapper isCard lists={lists} id={id} />
       </section>
     </GLContextProvider>
   );

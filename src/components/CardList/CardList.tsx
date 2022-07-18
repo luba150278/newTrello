@@ -4,25 +4,24 @@ import cn from 'classnames';
 import { motion, useAnimation } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
 import { useInView } from 'react-intersection-observer';
-import { ICard } from '../../interfaces/ICard';
 import styles from './CardList.module.css';
 import { listItem, ulCard } from '../../common/constans/motionList';
 import CardItem from '../CardItem/CardItem';
 import GetListContext from '../../context/GetListContext';
 import Context from '../../context/Context';
-import { IList } from '../../interfaces/ILists';
+import ListMenuContext from '../../context/ListMenuContext';
 
-export interface Props {
-  cards: ICard[];
-  idList: number;
-  lists: IList[];
-}
-
-function CardList({ cards, idList, lists }: Props): JSX.Element {
+function CardList(): JSX.Element {
   const { store } = useContext(Context);
+  const { cards, idList, lists } = useContext(ListMenuContext);
   const { id, getLists } = useContext(GetListContext);
   const [idMoveCard, setIdMoveCard] = useState(0);
   const [currentPos, setCurrentPos] = useState(0);
+  // const [showMenu, setShowMenu] = useState(false);
+  const [showCardId, setShowCardId] = useState('0');
+  const openMenu = (idCard: string, listId: number): void => {
+    if (listId === idList) setShowCardId(idCard);
+  };
   // const [isMove, setIsMove] = useState(false);
 
   async function saveMove(): Promise<void> {
@@ -63,7 +62,7 @@ function CardList({ cards, idList, lists }: Props): JSX.Element {
             // drag
             // whileDrag={{ scale: 1.2 }}
           >
-            <CardItem startTitle={card.title} idCard={`${card.id}`} idList={idList} />
+            <CardItem card={card} showMenu={showCardId === `${card.id}`} openMenu={openMenu} />
           </motion.li>
         ))}
       </motion.ul>

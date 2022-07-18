@@ -14,6 +14,7 @@ import CardList from '../CardList/CardList';
 import { ICard } from '../../interfaces/ICard';
 import Context from '../../context/Context';
 import ListMenuWrap from '../ListMenuWrap/ListMenuWrap';
+import { ListMenuProvider } from '../../context/ListMenuContext';
 
 interface Props {
   item: IList;
@@ -23,9 +24,9 @@ interface Props {
 function ListItem({ item, lists }: Props): JSX.Element {
   const { store } = useContext(Context);
   const [showInput, setShowInput] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
-  const toggleMenu = (): void => {
-    setShowMenu(!showMenu);
+  const [showListMenu, setShowListMenu] = useState(false);
+  const toggleListMenu = (): void => {
+    setShowListMenu(!showListMenu);
   };
   const cards = Object.values(item.cards);
   const [cardsArr, setCardsArr] = useState(cards.sort((a: ICard, b: ICard) => (a.position > b.position ? 1 : -1)));
@@ -64,52 +65,61 @@ function ListItem({ item, lists }: Props): JSX.Element {
   };
 
   return (
-    <div
-      className={styles.listInner}
-      onDragOver={(e): void => e.preventDefault()}
-      onDrop={(): void => {
-        store.setCurrentListID(item.id);
+    <ListMenuProvider
+      value={{
+        showListMenu,
+        toggleListMenu,
+        sortCards,
+        idList: item.id,
+        listTitle: item.title,
+        listPosition: item.position,
+        cardsLength: cardsArr.length,
+        cards: cardsArr,
+        lists,
       }}
     >
-      <div className={styles.listHeader}>
-        <div className={styles.iconWrap} onClick={toggleMenu}>
+      <div
+        className={styles.listInner}
+        onDragOver={(e): void => e.preventDefault()}
+        onDrop={(): void => {
+          store.setCurrentListID(item.id);
+        }}
+      >
+        <div className={styles.listHeader}>
+          <div className={styles.iconWrap} onClick={toggleListMenu}>
+            <Icon
+              iconChild={<CgMoreAlt />}
+              styles={{
+                className: 'icon',
+                size: '20',
+              }}
+            />
+          </div>
+        </div>
+        <ListTitle />
+        <CardList />
+        <div
+          className={cn(styles.addCardWrapp, { [styles.hidden]: showInput })}
+          onClick={(): void => setShowInput(!showInput)}
+        >
           <Icon
-            iconChild={<CgMoreAlt />}
+            iconChild={<RiAddCircleLine />}
             styles={{
               className: 'icon',
-              size: '20',
+              size: '25',
             }}
+            isToolTip
+            toolTipText="Add a new card"
+            toolTipPlace="top"
           />
         </div>
+        <div className={cn(styles.addCard, { [styles.hidden]: !showInput })}>
+          <AddCard idList={item.id} position={cards.length + 1} />
+        </div>
+        <div>{cardsArr.length}</div>
+        <ListMenuWrap />
       </div>
-      <ListTitle startTitle={item.title} idList={item.id} pos={item.position} />
-      <CardList cards={cardsArr} idList={item.id} lists={lists} />
-      <div
-        className={cn(styles.addCardWrapp, { [styles.hidden]: showInput })}
-        onClick={(): void => setShowInput(!showInput)}
-      >
-        <Icon
-          iconChild={<RiAddCircleLine />}
-          styles={{
-            className: 'icon',
-            size: '25',
-          }}
-          isToolTip
-          toolTipText="Add a new card"
-          toolTipPlace="top"
-        />
-      </div>
-      <div className={cn(styles.addCard, { [styles.hidden]: !showInput })}>
-        <AddCard idList={item.id} position={cards.length + 1} />
-      </div>
-      <ListMenuWrap
-        isVisible={showMenu}
-        toggleMenu={toggleMenu}
-        idList={item.id}
-        sortCards={sortCards}
-        cardsLength={cardsArr.length}
-      />
-    </div>
+    </ListMenuProvider>
   );
 }
 export default observer(ListItem);

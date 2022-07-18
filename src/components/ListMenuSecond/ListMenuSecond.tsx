@@ -1,17 +1,15 @@
 /* eslint-disable react/no-array-index-key */
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useContext } from 'react';
 import { BiSortDown, BiSortUp } from 'react-icons/bi';
 import { IoMdClose, IoIosArrowBack } from 'react-icons/io';
 import { listItem } from '../../common/constans/motionList';
 import styles from './ListMenuSecond.module.css';
 import Icon from '../Icon/Icon';
+import ListMenuContext from '../../context/ListMenuContext';
 
 interface Props {
-  idList: number;
-  toggleMenu: () => void;
   openSecondMenu: () => void;
-  sortCards: (paramSort: number) => void;
 }
 interface IData {
   title: string;
@@ -27,7 +25,8 @@ const dataList: IData[] = [
   { title: 'Sort by date (descending)', icon: <BiSortUp /> },
 ];
 
-function ListMenuSecond({ idList, toggleMenu, openSecondMenu, sortCards }: Props): JSX.Element {
+function ListMenuSecond({ openSecondMenu }: Props): JSX.Element {
+  const { idList, toggleListMenu, sortCards } = useContext(ListMenuContext);
   return (
     <>
       <motion.li variants={listItem} className={styles.menuItem} key={`${idList}-0`}>
@@ -44,7 +43,7 @@ function ListMenuSecond({ idList, toggleMenu, openSecondMenu, sortCards }: Props
         <div
           onClick={(): void => {
             openSecondMenu();
-            toggleMenu();
+            toggleListMenu();
           }}
           className={styles.iconWrap}
         >
@@ -65,7 +64,7 @@ function ListMenuSecond({ idList, toggleMenu, openSecondMenu, sortCards }: Props
           onClick={(): void => {
             sortCards(i);
             openSecondMenu();
-            toggleMenu();
+            toggleListMenu();
           }}
         >
           <div>{item.title}</div>
