@@ -2,14 +2,13 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import ModalWrapper from '../../../components/Modal/ModalWrapper';
-// import Context from '../../../context/Context';
 import { colorGenerator } from '../../../functions/colorGenerator';
 import styles from './Boards.module.css';
 import BoardsHeader from './BoardsHeader/BoardsHeader';
 import { IBoard } from '../../../interfaces/IBoard';
 import { listItem, ul } from '../../../common/constans/motionList';
 import { NO_BOARDS } from '../../../common/constans/messages';
+import ModalWrapper from '../../../components/Modal/BoardModal/ModalWrapper';
 
 interface Props {
   boards: IBoard[];

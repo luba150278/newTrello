@@ -3,44 +3,29 @@ import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import Context from '../../context/Context';
 import GetListContext from '../../context/GetListContext';
-import { IInput } from '../../interfaces/IInput';
-import InputBlock from '../InputBlock/InputBlock';
+import { IAddCard } from '../../interfaces/IAddCard';
+import AddCardInput from '../AddCardInput/AddCardInput';
 import styles from './AddCard.module.css';
 
-export interface Props {
-  position: number;
-  idList: number;
-}
-
-function AddCard({ position, idList }: Props): JSX.Element {
+function AddCard(props: IAddCard): JSX.Element {
+  const { position, idList } = props;
   const { store } = useContext(Context);
   const { id, getLists } = useContext(GetListContext);
   const [title, setTitle] = useState('');
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setTitle(event.target.value);
 
-  async function add(): Promise<void> {
+  const add = async (): Promise<void> => {
     await store.addCard(title, id, idList, position);
     await getLists();
-  }
-  const keyPressHandler = async (event: React.KeyboardEvent): Promise<void> => {
-    if (event.key === 'Enter') {
-      await add();
-    }
   };
 
-  const inputData: IInput = {
-    title,
-    ph: 'Enter card name',
-    changeHandler,
-    onKeyPress: keyPressHandler,
-    cln: '',
-    clni: 'inputName',
-    ref: null,
+  const findTitle = (newTitle: string): void => {
+    setTitle(newTitle);
   };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.addPanel}>
-        <InputBlock inputData={inputData} />
+        <AddCardInput findTitle={findTitle} add={add} />
         <Button variant="primary" onClick={async (): Promise<void> => add()}>
           Add a new card
         </Button>

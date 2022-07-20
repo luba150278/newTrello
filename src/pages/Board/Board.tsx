@@ -8,7 +8,7 @@ import AddList from '../../components/AddList/AddList';
 import LinkToMain from '../../components/LinkToMain/Link';
 import Lists from '../../components/Lists/Lists';
 import Loader from '../../components/Loader/Loader';
-import ModalWrapper from '../../components/Modal/ModalWrapper';
+import ModalWrapper from '../../components/Modal/BoardModal/ModalWrapper';
 import Context from '../../context/Context';
 import { GLContextProvider } from '../../context/GetListContext';
 import { IList } from '../../interfaces/ILists';

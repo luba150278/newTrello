@@ -1,0 +1,16 @@
+.wrap{
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  grid-auto-flow: row;
+  margin-top: 20px;
+}
+.selectList{
+  width: 100%;
+}
+.selectOption{
+  width: 100%;
+}
+.h5{
+  margin: 0;
+}

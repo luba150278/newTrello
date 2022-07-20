@@ -72,7 +72,7 @@ export default class BoardService {
     return $api.put(`${config.board}/${id}/card/${idCard}`, { title, list_id: idList });
   }
 
-  static async moveCardInOneList(newData: ICardMove[], id: string): Promise<AxiosResponse<IBoardResponse>> {
+  static async moveCard(newData: ICardMove[], id: string): Promise<AxiosResponse<IBoardResponse>> {
     return $api.put(`${config.board}/${id}/card`, newData);
   }
 }

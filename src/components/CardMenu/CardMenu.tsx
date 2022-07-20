@@ -2,7 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 import { motion } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { BsCardText } from 'react-icons/bs';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { FiCopy } from 'react-icons/fi';
@@ -14,6 +14,7 @@ import GetListContext from '../../context/GetListContext';
 import ListMenuContext from '../../context/ListMenuContext';
 import { ICard } from '../../interfaces/ICard';
 import Icon from '../Icon/Icon';
+import CardMoveWrap from '../Modal/CardMoveWrap/CardMoveWrap';
 import styles from './CardMenu.module.css';
 
 const menuData = [
@@ -33,6 +34,10 @@ function CardMenu({ card, idList }: Props): JSX.Element {
   const { store } = useContext(Context);
   const { id, getLists } = useContext(GetListContext);
   const { lists, cardsLength } = useContext(ListMenuContext);
+  const [showModal, setShowModal] = useState(false);
+  const toggleModal = (): void => {
+    setShowModal(!showModal);
+  };
 
   const openCard = (): void => {
     store.setCard(card);
@@ -47,6 +52,10 @@ function CardMenu({ card, idList }: Props): JSX.Element {
     await store.addCard(card.title, id, idList, cardsLength + 1);
     await getLists();
   };
+  const moveCard = (): void => {
+    setShowModal(true);
+  };
+
   const setClick = (variant: number): void => {
     switch (variant) {
       case 1:
@@ -57,6 +66,9 @@ function CardMenu({ card, idList }: Props): JSX.Element {
         break;
       case 3:
         copyCard();
+        break;
+      case 4:
+        moveCard();
         break;
       default:
         openCard();
@@ -85,6 +97,7 @@ function CardMenu({ card, idList }: Props): JSX.Element {
           </motion.li>
         ))}
       </motion.ul>
+      {showModal ? <CardMoveWrap idBoard={id} toggleModal={toggleModal} card={card} idList={idList} /> : null}
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { ICard } from '../../interfaces/ICard';
 import Context from '../../context/Context';
 import ListMenuWrap from '../ListMenuWrap/ListMenuWrap';
 import { ListMenuProvider } from '../../context/ListMenuContext';
+import { IAddCard } from '../../interfaces/IAddCard';
 
 interface Props {
   item: IList;
@@ -30,7 +31,6 @@ function ListItem({ item, lists }: Props): JSX.Element {
   };
   const cards = Object.values(item.cards);
   const [cardsArr, setCardsArr] = useState(cards.sort((a: ICard, b: ICard) => (a.position > b.position ? 1 : -1)));
-  // let cardSort = cards.sort((a: ICard, b: ICard) => (a.position > b.position ? 1 : -1));
 
   const sortCards = (paramSort: number): void => {
     switch (paramSort) {
@@ -64,6 +64,7 @@ function ListItem({ item, lists }: Props): JSX.Element {
     }
   };
 
+  const addCardProps: IAddCard = { idList: item.id, position: cards.length + 1 };
   return (
     <ListMenuProvider
       value={{
@@ -114,9 +115,9 @@ function ListItem({ item, lists }: Props): JSX.Element {
           />
         </div>
         <div className={cn(styles.addCard, { [styles.hidden]: !showInput })}>
-          <AddCard idList={item.id} position={cards.length + 1} />
+          <AddCard {...addCardProps} />
         </div>
-        <div>{cardsArr.length}</div>
+        <div className={styles.cardNumber}>{cardsArr.length}</div>
         <ListMenuWrap />
       </div>
     </ListMenuProvider>

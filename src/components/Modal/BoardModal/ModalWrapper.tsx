@@ -5,13 +5,13 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { ADD_BOARD_TITLE } from '../../common/constans/messages';
-import Context from '../../context/Context';
-import { IList } from '../../interfaces/ILists';
-import BoardCreate from '../BoardCreate/BoardCreate';
-import CardDisplay from '../CardDisplay/CardDisplay';
-import Icon from '../Icon/Icon';
-import Modal from './Modal';
+import { ADD_BOARD_TITLE } from '../../../common/constans/messages';
+import Context from '../../../context/Context';
+import { IList } from '../../../interfaces/ILists';
+import AddBoard from '../../AddBoard/AddBoard';
+import CardDisplay from '../../CardDisplay/CardDisplay';
+import Icon from '../../Icon/Icon';
+import Modal from '../Modal';
 import styles from './ModalWrapper.module.css';
 
 interface ModalWrapperProps {
@@ -41,7 +41,7 @@ function ModalWrapper({ isCard, lists = [], id = '0' }: ModalWrapperProps): JSX.
         </div>
       </div>
       {!isCard ? <h3 className={styles.header}>{ADD_BOARD_TITLE}</h3> : null}
-      {!isCard ? <BoardCreate /> : <CardDisplay card={store.card} listID={store.currentListID} lists={lists} id={id} />}
+      {!isCard ? <AddBoard /> : <CardDisplay card={store.card} listID={store.currentListID} lists={lists} id={id} />}
     </div>
   );
 

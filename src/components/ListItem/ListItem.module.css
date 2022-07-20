@@ -1,4 +1,4 @@
-.listInner{
+.listInner {
   display: grid;
   grid-template-rows: auto auto 1fr auto;
   height: 100%;
@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: flex-end;
 }
-.iconWrap{
+.iconWrap {
   cursor: pointer;
 }
 
@@ -25,4 +25,26 @@
 }
 .hidden {
   display: none;
+}
+.cardNumber{
+  position: relative;
+}
+.cardNumber::before{
+  content: 'Number of cards';
+  position: absolute;
+  top: 2px;
+  left: 30px;
+  font-weight: normal;
+  z-index: 2;
+  padding: 2px 4px;
+  opacity: 0;
+  transition: opacity 0.25s ease-in;
+  line-height: 1;
+}
+.cardNumber:hover {
+  font-weight: bold; 
+  cursor: pointer;  
+}
+.cardNumber:hover::before {
+  opacity: 1;
 }

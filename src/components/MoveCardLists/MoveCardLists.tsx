@@ -1,0 +1,56 @@
+/* eslint-disable no-console */
+/* eslint-disable react/jsx-no-useless-fragment */
+import React, { useContext, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
+import Context from '../../context/Context';
+import GetListContext from '../../context/GetListContext';
+import { ICard } from '../../interfaces/ICard';
+import { IList } from '../../interfaces/ILists';
+import styles from './MoveCardLists.module.css';
+
+interface Props {
+  id: string;
+  card: ICard;
+  idList: number;
+  idBoardFrom: string;
+}
+
+function MoveCardLists({ id, card, idList, idBoardFrom }: Props): JSX.Element {
+  const { store } = useContext(Context);
+  const { getLists } = useContext(GetListContext);
+  const { listArr } = store;
+  const lists = Object.values(listArr.filter((item) => item.boardID === Number(id))[0].lists).filter(
+    (item) => item.id !== idList
+  );
+  if (lists.length === 0) {
+    return <p>No Lists</p>;
+  }
+  const [idListSelect, setIDList] = useState(lists[0].id);
+  async function clickHandler(): Promise<void> {
+    await store.moveCardFromWrap(idBoardFrom, card.id, listArr, idList, idListSelect, Number(id));
+    // await store.getLists(idBoardFrom);
+    await getLists();
+  }
+  return (
+    <div className={styles.wrap}>
+      <h5 className={styles.h5}>Lists:</h5>
+      <Form.Select
+        className={styles.selectList}
+        onChange={(e): void => {
+          setIDList(Number(e.target.value));
+          // clickHandler();
+        }}
+        defaultValue={idListSelect}
+      >
+        {lists.map((item: IList) => (
+          <option key={item.id} value={item.id} className={styles.selectOption}>
+            {item.title}
+          </option>
+        ))}
+      </Form.Select>
+      <Button onClick={(): Promise<void> => clickHandler()}>Move Card</Button>
+    </div>
+  );
+}
+
+export default MoveCardLists;

@@ -25,7 +25,7 @@ function CardList(): JSX.Element {
   // const [isMove, setIsMove] = useState(false);
 
   async function saveMove(): Promise<void> {
-    await store.moveCardInOneList(idMoveCard, id, lists);
+    await store.moveCardHandle(idMoveCard, id, lists);
     await getLists();
     setIdMoveCard(0);
   }
