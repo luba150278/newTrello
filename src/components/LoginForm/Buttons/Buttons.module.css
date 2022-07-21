@@ -11,6 +11,27 @@
   gap: 10px;
   align-items: center;
 }
+.messageWrap{
+  display: grid;
+  gap: 10px;
+  grid-auto-flow: row;
+}
+.loginMessageWrap{
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+}
+.link{
+  font-weight: bold;
+  color: var(--font-color);
+  text-decoration: underline;
+  text-align: right;
+}
+.link:hover{
+  cursor: pointer;
+  color: var(--contrast-color);
+}
 .hidden{
   display: none;
 }

@@ -1,48 +1,39 @@
-/* eslint-disable no-console */
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react';
 import { TbPencil } from 'react-icons/tb';
 import ListMenuContext from '../../context/ListMenuContext';
-import { ICard } from '../../interfaces/ICard';
+import { CardItemProps } from '../../interfaces/CardItemProps';
+import { IconWrapProps } from '../../interfaces/IconWrapProps';
 import CardMenu from '../CardMenu/CardMenu';
 import CardTitle from '../CardTitle/CardTitle';
-// import DeleteElement from '../DeleteElement/DeleteElement';
-import Icon from '../Icon/Icon';
+import IconWrap from '../IconWrap/IconWrap';
 import styles from './CardItem.module.css';
 
-export interface Props {
-  card: ICard;
-  showMenu: boolean;
-  openMenu: (idCard: string, listId: number) => void;
-}
-
-function CardItem({ card, showMenu, openMenu }: Props): JSX.Element {
+function CardItem(props: CardItemProps): JSX.Element {
+  const { card, showMenu, openMenu } = props;
   const { idList } = useContext(ListMenuContext);
   const [closeMenu, setCloseMenu] = useState(true);
   const toggleCloseMenu = (): void => {
     setCloseMenu(!closeMenu);
   };
 
+  const iconWrapProps: IconWrapProps = {
+    onClick: (): void => {
+      toggleCloseMenu();
+      openMenu(`${card.id}`, idList);
+    },
+    iconChild: <TbPencil />,
+    iconStyles: {
+      className: 'iconPencil',
+      size: '20',
+      title: 'Card menu',
+    },
+    className: 'cardMenuIconWrap',
+  };
   return (
     <div className={styles.cardWrap}>
       <CardTitle card={card} />
-      <div
-        onClick={(): void => {
-          toggleCloseMenu();
-          openMenu(`${card.id}`, idList);
-        }}
-        className={styles.cardMenuIconWrap}
-        id={`${card.id}`}
-      >
-        <Icon
-          iconChild={<TbPencil />}
-          styles={{
-            className: 'iconPencil',
-            size: '20',
-            title: 'Card menu',
-          }}
-        />
-      </div>
+      <IconWrap {...iconWrapProps} />
       {card.description !== '' ? <p>'xxx'</p> : null}
       {showMenu && !closeMenu ? <CardMenu card={card} idList={idList} /> : null}
     </div>

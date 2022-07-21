@@ -1,4 +1,3 @@
-
 import React, { useContext } from 'react';
 import cn from 'classnames';
 import { Button } from 'react-bootstrap';
@@ -13,10 +12,14 @@ interface IProps {
 }
 function Buttons({ isReg, changeIsReg }: IProps): JSX.Element {
   const { store } = useContext(Context);
-  async function xxx(): Promise<void> {
+  async function login(): Promise<void> {
     await store.login(store.defaultData.email, store.defaultData.password);
     await store.getBoards();
   }
+  const loginPlayground = async (): Promise<void> => {
+    await store.loginPlayground();
+    await store.getBoards();
+  };
   return (
     <div className={styles.buttonWrap}>
       <Button
@@ -27,14 +30,21 @@ function Buttons({ isReg, changeIsReg }: IProps): JSX.Element {
         Registration
       </Button>
       <div className={styles.loginWrap}>
-        <p className={cn(styles.message, { [styles.hidden]: !isReg })}>{ALREADY_REG}</p>
-        <Button variant="primary" onClick={changeIsReg} className={cn(styles.logBtn1, { [styles.hidden]: !isReg })}>
-          Login
-        </Button>
+        <div className={cn(styles.messageWrap, { [styles.hidden]: !isReg })}>
+          <div className={styles.loginMessageWrap}>
+            <p className={styles.message}>{ALREADY_REG}</p>
+            <p onClick={changeIsReg} className={styles.link}>
+              Login
+            </p>
+          </div>
+          <p className={styles.link} onClick={loginPlayground}>
+            Playground
+          </p>
+        </div>
         <Button
           variant="primary"
           className={cn(styles.logBtn2, { [styles.hidden]: isReg })}
-          onClick={(): Promise<void> => xxx()}
+          onClick={(): Promise<void> => login()}
         >
           Login
         </Button>

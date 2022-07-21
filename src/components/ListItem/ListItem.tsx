@@ -6,7 +6,6 @@ import cn from 'classnames';
 import { observer } from 'mobx-react-lite';
 import styles from './ListItem.module.css';
 import ListTitle from '../ListTitle/ListTitle';
-// import DeleteElement from '../DeleteElement/DeleteElement';
 import Icon from '../Icon/Icon';
 import { IList } from '../../interfaces/ILists';
 import AddCard from '../AddCard/AddCard';
@@ -86,16 +85,14 @@ function ListItem({ item, lists }: Props): JSX.Element {
           store.setCurrentListID(item.id);
         }}
       >
-        <div className={styles.listHeader}>
-          <div className={styles.iconWrap} onClick={toggleListMenu}>
-            <Icon
-              iconChild={<CgMoreAlt />}
-              styles={{
-                className: 'icon',
-                size: '20',
-              }}
-            />
-          </div>
+        <div className={styles.listHeader} onClick={toggleListMenu}>
+          <Icon
+            iconChild={<CgMoreAlt />}
+            styles={{
+              className: 'icon',
+              size: '20',
+            }}
+          />
         </div>
         <ListTitle />
         <CardList />

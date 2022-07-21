@@ -9,11 +9,14 @@ import { FiCopy } from 'react-icons/fi';
 import { TbUsers } from 'react-icons/tb';
 import { VscMove } from 'react-icons/vsc';
 import { div, listItem } from '../../common/constans/motionList';
+import { CardMoveProvider } from '../../context/CardMoveContext';
 import Context from '../../context/Context';
 import GetListContext from '../../context/GetListContext';
 import ListMenuContext from '../../context/ListMenuContext';
 import { ICard } from '../../interfaces/ICard';
-import Icon from '../Icon/Icon';
+import { IconWrapProps } from '../../interfaces/IconWrapProps';
+// import Icon from '../Icon/Icon';
+import IconWrap from '../IconWrap/IconWrap';
 import CardMoveWrap from '../Modal/CardMoveWrap/CardMoveWrap';
 import styles from './CardMenu.module.css';
 
@@ -35,28 +38,31 @@ function CardMenu({ card, idList }: Props): JSX.Element {
   const { id, getLists } = useContext(GetListContext);
   const { lists, cardsLength } = useContext(ListMenuContext);
   const [showModal, setShowModal] = useState(false);
+
   const toggleModal = (): void => {
     setShowModal(!showModal);
   };
 
-  const openCard = (): void => {
+  function openCard(): void {
     store.setCard(card);
     store.setCurrentListID(idList);
     store.setModal(true);
-  };
-  const deleteCard = async (): Promise<void> => {
+  }
+  async function deleteCard(): Promise<void> {
     await store.deleteCard(id, `${card.id}`, idList, lists);
     await getLists();
-  };
-  const copyCard = async (): Promise<void> => {
+  }
+
+  async function copyCard(): Promise<void> {
     await store.addCard(card.title, id, idList, cardsLength + 1);
     await getLists();
-  };
-  const moveCard = (): void => {
-    setShowModal(true);
-  };
+  }
 
-  const setClick = (variant: number): void => {
+  function moveCard(): void {
+    setShowModal(true);
+  }
+
+  function setClick(variant: number): void {
     switch (variant) {
       case 1:
         openCard();
@@ -73,31 +79,39 @@ function CardMenu({ card, idList }: Props): JSX.Element {
       default:
         openCard();
     }
-  };
+  }
+  const cardMoveWrap = (): JSX.Element => (
+    <CardMoveProvider value={{ card, idList, toggleModal }}>
+      <CardMoveWrap />
+    </CardMoveProvider>
+  );
   return (
     <div className={styles.cardMenuWrap}>
       <motion.ul className={styles.cardMenuList} variants={div} initial="hidden" animate="show">
-        {menuData.map((item, i) => (
-          <motion.li
-            variants={listItem}
-            className={styles.cardMenuItem}
-            key={`cardMenu-${i + 1}`}
-            onClick={(): void => setClick(i + 1)}
-          >
-            <div className={styles.iconWrap}>
-              <Icon
-                iconChild={item.icon}
-                styles={{
-                  className: 'iconCardMenu',
-                  size: '20',
-                }}
-              />
-            </div>
-            <div>{item.title}</div>
-          </motion.li>
-        ))}
+        {menuData.map((item, i) => {
+          const iconWrapProps: IconWrapProps = {
+            iconChild: item.icon,
+            iconStyles: {
+              className: 'iconCardMenu',
+              size: '20',
+              title: 'Open card menu',
+            },
+            className: 'iconWrap',
+          };
+          return (
+            <motion.li
+              variants={listItem}
+              className={styles.cardMenuItem}
+              key={`cardMenu-${i + 1}`}
+              onClick={(): void => setClick(i + 1)}
+            >
+              <IconWrap {...iconWrapProps} />
+              <div>{item.title}</div>
+            </motion.li>
+          );
+        })}
       </motion.ul>
-      {showModal ? <CardMoveWrap idBoard={id} toggleModal={toggleModal} card={card} idList={idList} /> : null}
+      {showModal ? cardMoveWrap() : null}
     </div>
   );
 }

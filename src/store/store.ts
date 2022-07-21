@@ -187,6 +187,13 @@ export default class Store {
     }
   }
 
+  async loginPlayground(): Promise<void> {
+    localStorage.setItem('token', this.token);
+    localStorage.setItem('name', 'playground');
+    this.setUser();
+    this.setAuth(true);
+  }
+
   // -----------------BOARDS-------------------
   async getBoards(): Promise<void> {
     try {
@@ -354,6 +361,7 @@ export default class Store {
       const response = await BoardService.editCardTitle(title, id, idList, idCard);
       if (response.data.result === 'Updated') {
         getSuccessNotify(EDIT_CARD);
+        // Правильное отображение title в модальном окне редактирования карточки - сразу после обновления
         await this.getLists(id);
         const { cards } = lists.filter((item) => item.id === idList)[0];
         const cardsArr = Object.values(cards);

@@ -9,14 +9,4 @@
 .cardWrap:hover input{
   cursor: pointer;
 }
-.cardMenuIconWrap{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2px;  
-}
-.cardMenuIconWrap:hover{
-  background: var(--box-shadow);
-  border-radius: 2px;
-}
 

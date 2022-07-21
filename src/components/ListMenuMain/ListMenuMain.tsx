@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useContext } from 'react';
 import cn from 'classnames';
 import { IoMdClose } from 'react-icons/io';
 import { CgMoreAlt } from 'react-icons/cg';
@@ -8,15 +8,15 @@ import { listItem } from '../../common/constans/motionList';
 import styles from './ListMenuMain.module.css';
 import Icon from '../Icon/Icon';
 import DeleteElement from '../DeleteElement/DeleteElement';
+import ListMenuContext from '../../context/ListMenuContext';
 
 interface Props {
-  idList: number;
   toggleListMenu: () => void;
   openSecondMenu: () => void;
-  cardsLength: number;
 }
 
-function ListMenuMain({ idList, toggleListMenu, openSecondMenu, cardsLength }: Props): JSX.Element {
+function ListMenuMain({ toggleListMenu, openSecondMenu }: Props): JSX.Element {
+  const { idList, cardsLength } = useContext(ListMenuContext);
   return (
     <>
       <motion.li variants={listItem} className={cn(styles.headerMenu, styles.menuItem)} onClick={toggleListMenu}>

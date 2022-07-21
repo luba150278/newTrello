@@ -8,7 +8,7 @@ import ListMenuSecond from '../ListMenuSecond/ListMenuSecond';
 import ListMenuContext from '../../context/ListMenuContext';
 
 function ListMenuWrap(): JSX.Element {
-  const { showListMenu, toggleListMenu, idList, cardsLength } = useContext(ListMenuContext);
+  const { showListMenu, toggleListMenu } = useContext(ListMenuContext);
   const [isMainMenu, setIsMainMenu] = useState(true);
   const openSecondMenu = (): void => {
     setIsMainMenu(!isMainMenu);
@@ -21,12 +21,7 @@ function ListMenuWrap(): JSX.Element {
       animate={showListMenu ? 'show' : 'hidden'}
     >
       {isMainMenu ? (
-        <ListMenuMain
-          idList={idList}
-          toggleListMenu={toggleListMenu}
-          openSecondMenu={openSecondMenu}
-          cardsLength={cardsLength}
-        />
+        <ListMenuMain toggleListMenu={toggleListMenu} openSecondMenu={openSecondMenu} />
       ) : (
         <ListMenuSecond openSecondMenu={openSecondMenu} />
       )}

@@ -9,11 +9,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-}
-.iconWrap {
   cursor: pointer;
 }
-
 .addCardWrapp {
   position: relative;
   display: flex;

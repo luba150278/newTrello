@@ -25,19 +25,3 @@
   text-align: center;
   margin-bottom: 20px;
 }
-
-.close {
-  position: absolute;
-  top: 0;
-  right: 20px;
-}
-.close:hover {
-  cursor: pointer;
-}
-.close-icon {
-  color: rgb(128, 127, 127);
-  height: 1rem;
-}
-.close-icon:hover {
-  color: #bb2a81;
-}

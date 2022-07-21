@@ -1,24 +1,22 @@
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-no-useless-fragment */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form } from 'react-bootstrap';
+import Context from '../../context/Context';
+import GetListContext from '../../context/GetListContext';
 import { IBoard } from '../../interfaces/IBoard';
-import { ICard } from '../../interfaces/ICard';
 import MoveCardLists from '../MoveCardLists/MoveCardLists';
 import styles from './MoveCardBoards.module.css';
 
-interface Props {
-  boards: IBoard[];
-  boardID: string;
-  card: ICard;
-  idList: number;
-}
-
-function MoveCardBoards({ boards, boardID, card, idList }: Props): JSX.Element {
+function MoveCardBoards(): JSX.Element {
+  const { store } = useContext(Context);
+  const { boards } = store;
   if (boards.length === 0) {
     return <></>;
   }
-  const [id, setID] = useState(boardID);
+
+  const { id } = useContext(GetListContext);
+  const [idBoard, setID] = useState(id);
 
   return (
     <div className={styles.wrap}>
@@ -28,7 +26,7 @@ function MoveCardBoards({ boards, boardID, card, idList }: Props): JSX.Element {
         onChange={(e): void => {
           setID(e.target.value);
         }}
-        defaultValue={id}
+        defaultValue={idBoard}
       >
         {boards.map((item: IBoard) => (
           <option key={item.id} value={item.id} className={styles.selectOption}>
@@ -36,7 +34,7 @@ function MoveCardBoards({ boards, boardID, card, idList }: Props): JSX.Element {
           </option>
         ))}
       </Form.Select>
-      <MoveCardLists id={id} card={card} idList={idList} idBoardFrom={boardID} />
+      <MoveCardLists idBoardTo={idBoard} idBoardFrom={id} />
     </div>
   );
 }
