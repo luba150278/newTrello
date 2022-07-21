@@ -6,7 +6,7 @@ import React, { useContext, useState } from 'react';
 import { BsCardText } from 'react-icons/bs';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { FiCopy } from 'react-icons/fi';
-import { TbUsers } from 'react-icons/tb';
+// import { TbUsers } from 'react-icons/tb';
 import { VscMove } from 'react-icons/vsc';
 import { div, listItem } from '../../common/constans/motionList';
 import { CardMoveProvider } from '../../context/CardMoveContext';
@@ -27,7 +27,7 @@ const menuData = [
   // { title: 'Edit description card', icon: <TbFileDescription /> },
   { title: 'Copy card', icon: <FiCopy /> },
   { title: 'Move card', icon: <VscMove /> },
-  { title: 'Change card users', icon: <TbUsers /> },
+  // { title: 'Change card users', icon: <TbUsers /> },
 ];
 interface Props {
   card: ICard;

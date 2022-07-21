@@ -3,6 +3,7 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import { Form, InputGroup, OverlayTrigger } from 'react-bootstrap';
 import cn from 'classnames';
 import { observer } from 'mobx-react-lite';
+import PasswordStrengthBar from 'react-password-strength-bar';
 import RenderToolTip from '../../RenderToolTip/RenderToolTip';
 import Icon from '../../Icon/Icon';
 import styles from './Inputs.module.css';
@@ -48,6 +49,7 @@ function Inputs({ isReg }: IProps): JSX.Element {
             />
           </InputGroup>
         </OverlayTrigger>
+        {isReg ? <PasswordStrengthBar password={password} /> : null}
         <div className={cn(styles.secondPass, { [styles.hidden]: !isReg })}>
           <InputGroup>
             <Form.Control type={isShowPass ? 'text' : 'password'} placeholder="Repaet password" />
