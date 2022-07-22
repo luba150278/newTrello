@@ -487,7 +487,9 @@ export default class Store {
         newData.push({ id: cardsToArr[i].id, position: cardsToArr[i].position, list_id: idListTo });
       }
       newData.push({ id: idMoveCard, position: cardPos, list_id: idListTo });
+      await BoardService.moveCard(newData, `${idBoardTo}`);
       // удаляем из перетянутого
+      const newData2: ICardMove[] = [];
       const lists = Object.values(listsArr.filter((item) => item.boardID === Number(id))[0].lists);
       const cardsOnStartList = lists.filter((item) => item.id === idListFrom)[0].cards;
       const cardsAll = Object.values(cardsOnStartList);
@@ -496,15 +498,12 @@ export default class Store {
       let num = 1;
       for (let i = 0; i < cardSort.length; i++) {
         if (cardSort[i].id !== idMoveCard) {
-          newData.push({ id: cardSort[i].id, position: num, list_id: idListFrom });
+          newData2.push({ id: cardSort[i].id, position: num, list_id: idListFrom });
           num++;
         }
       }
 
-      const res = await BoardService.moveCard(newData, `${idBoardTo}`);
-      if (res.data.result === 'Updated') {
-        await this.getBoards();
-      }
+      await BoardService.moveCard(newData2, `${id}`);
     } catch (e) {
       this.setError(e);
     } finally {
