@@ -1,13 +1,18 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-console */
 import React, { useContext, useState } from 'react';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import { Form, InputGroup, OverlayTrigger } from 'react-bootstrap';
 import cn from 'classnames';
 import { observer } from 'mobx-react-lite';
 import PasswordStrengthBar from 'react-password-strength-bar';
+import { FaTimes } from 'react-icons/fa';
+import { MdDone } from 'react-icons/md';
 import RenderToolTip from '../../RenderToolTip/RenderToolTip';
 import Icon from '../../Icon/Icon';
 import styles from './Inputs.module.css';
 import Context from '../../../context/Context';
+import IconWrap from '../../IconWrap/IconWrap';
 
 interface IProps {
   isReg: boolean;
@@ -17,6 +22,13 @@ function Inputs({ isReg }: IProps): JSX.Element {
   const [isShowPass, setIsShowPass] = useState(false);
   const [email, setEmail] = useState<string>(store.defaultData.email);
   const [password, setPassword] = useState<string>(store.defaultData.password);
+  const [comparePass, setComparePass] = useState(false);
+  const [visibleIconCopare, setVisibleIconCompare] = useState(false);
+  function findClass(): string {
+    if (comparePass) return 'iconDone';
+    return 'iconError';
+  }
+  console.log(findClass());
   return (
     <div className={styles.inputsGroup}>
       <InputGroup>
@@ -44,6 +56,7 @@ function Inputs({ isReg }: IProps): JSX.Element {
               onChange={(e): void => {
                 setPassword(e.target.value);
                 store.setDefaultData({ email, password: e.target.value });
+                setComparePass(false);
               }}
               value={password}
             />
@@ -52,8 +65,33 @@ function Inputs({ isReg }: IProps): JSX.Element {
         {isReg ? <PasswordStrengthBar password={password} /> : null}
         <div className={cn(styles.secondPass, { [styles.hidden]: !isReg })}>
           <InputGroup>
-            <Form.Control type={isShowPass ? 'text' : 'password'} placeholder="Repaet password" />
+            <Form.Control
+              onChange={(e): void => {
+                if (`${e.target.value}` !== '') {
+                  setVisibleIconCompare(true);
+                } else {
+                  setVisibleIconCompare(false);
+                }
+                if (password === `${e.target.value}`) {
+                  setComparePass(true);
+                } else {
+                  setComparePass(false);
+                }
+              }}
+              type={isShowPass ? 'text' : 'password'}
+              placeholder="Repaet password"
+            />
           </InputGroup>
+          {visibleIconCopare ? (
+            <IconWrap
+              iconChild={comparePass ? <MdDone /> : <FaTimes />}
+              iconStyles={{
+                className: findClass(),
+                size: '20',
+              }}
+              className="checkPass"
+            />
+          ) : null}
         </div>
         <div className={styles.showPass} onClick={(): void => setIsShowPass(!isShowPass)}>
           <Icon

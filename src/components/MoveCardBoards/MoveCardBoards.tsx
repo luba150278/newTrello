@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-no-useless-fragment */
+import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import Context from '../../context/Context';
@@ -39,4 +40,4 @@ function MoveCardBoards(): JSX.Element {
   );
 }
 
-export default MoveCardBoards;
+export default observer(MoveCardBoards);

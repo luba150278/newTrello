@@ -14,3 +14,11 @@
   color: var(--contrast-color);
   fill: var(--contrast-color);
 }
+.iconError{
+  color: var(--contrast-color);
+  fill: var(--contrast-color);
+}
+.iconDone{
+  color: var(--accent-color);
+  fill: var(--accent-color);
+}

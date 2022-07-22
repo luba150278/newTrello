@@ -53,18 +53,18 @@ function Board(): JSX.Element {
   }
 
   return (
-    <GLContextProvider value={{ getLists, id }}>
-      <section onClick={(): void => store.setModal(false)}>
-        <Container onClick={(e): void => e.stopPropagation()}>
+    <GLContextProvider value={{ getLists, id, lists }}>
+      <section>
+        <Container>
           <LinkToMain />
           <BoardTitle startTitle={startTitle} />
           <AddList position={pos} />
-          <Lists lists={lists} />
+          <Lists />
         </Container>
-        <ModalWrapper isCard lists={lists} id={id} />
+        <ModalWrapper isCard id={id} lists={lists} />
       </section>
     </GLContextProvider>
   );
 }
-
-export default withLayout(observer(Board));
+const board = observer(Board);
+export default withLayout(board);

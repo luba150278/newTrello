@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-no-useless-fragment */
+import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import CardMoveContext from '../../context/CardMoveContext';
@@ -27,7 +28,6 @@ function MoveCardLists({ idBoardTo, idBoardFrom }: Props): JSX.Element {
   const [idListSelect, setIDList] = useState(lists[0].id);
   async function clickHandler(): Promise<void> {
     await store.moveCardFromWrap(idBoardFrom, card.id, listArr, idList, idListSelect, Number(idBoardTo));
-    // await store.getLists(idBoardFrom);
     await getLists();
   }
   return (
@@ -37,7 +37,6 @@ function MoveCardLists({ idBoardTo, idBoardFrom }: Props): JSX.Element {
         className={styles.selectList}
         onChange={(e): void => {
           setIDList(Number(e.target.value));
-          // clickHandler();
         }}
         defaultValue={idListSelect}
       >
@@ -52,4 +51,4 @@ function MoveCardLists({ idBoardTo, idBoardFrom }: Props): JSX.Element {
   );
 }
 
-export default MoveCardLists;
+export default observer(MoveCardLists);

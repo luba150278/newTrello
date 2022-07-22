@@ -15,14 +15,15 @@ import Context from '../../context/Context';
 import ListMenuWrap from '../ListMenuWrap/ListMenuWrap';
 import { ListMenuProvider } from '../../context/ListMenuContext';
 import { IAddCard } from '../../interfaces/IAddCard';
+import GetListContext from '../../context/GetListContext';
 
 interface Props {
   item: IList;
-  lists: IList[];
 }
 
-function ListItem({ item, lists }: Props): JSX.Element {
+function ListItem({ item }: Props): JSX.Element {
   const { store } = useContext(Context);
+  const { lists } = useContext(GetListContext);
   const [showInput, setShowInput] = useState(false);
   const [showListMenu, setShowListMenu] = useState(false);
   const toggleListMenu = (): void => {

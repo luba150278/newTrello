@@ -478,11 +478,20 @@ export default class Store {
   ): Promise<void> {
     try {
       const newData: ICardMove[] = [];
-
+      // добавляем в новый из перетянутого
+      const lists2 = Object.values(listsArr.filter((item) => item.boardID === idBoardTo)[0].lists);
+      const cardsTo = lists2.filter((item) => item.id === idListTo)[0].cards;
+      const cardsToArr = Object.values(cardsTo);
+      const cardPos = cardsToArr.length + 1;
+      for (let i = 0; i < cardsToArr.length; i++) {
+        newData.push({ id: cardsToArr[i].id, position: cardsToArr[i].position, list_id: idListTo });
+      }
+      newData.push({ id: idMoveCard, position: cardPos, list_id: idListTo });
       // удаляем из перетянутого
       const lists = Object.values(listsArr.filter((item) => item.boardID === Number(id))[0].lists);
       const cardsOnStartList = lists.filter((item) => item.id === idListFrom)[0].cards;
       const cardsAll = Object.values(cardsOnStartList);
+
       const cardSort = cardsAll.sort((a: ICard, b: ICard) => (a.position > b.position ? 1 : -1));
       let num = 1;
       for (let i = 0; i < cardSort.length; i++) {
@@ -491,21 +500,11 @@ export default class Store {
           num++;
         }
       }
-      // await BoardService.moveCard(newData, id);
-      // this.getBoards();
-      // добавляем в новый из перетянутого
-      const lists2 = Object.values(listsArr.filter((item) => item.boardID === idBoardTo)[0].lists);
-      lists2.map((item) => console.log(idListTo === item.id));
-      const cardsTo = lists2.filter((item) => item.id === idListTo)[0].cards;
-      const cardsToArr = Object.values(cardsTo);
-      const cardPos = cardsToArr.length + 1;
-      // const newData2: ICardMove[] = [];
-      for (let i = 0; i < cardsToArr.length; i++) {
-        newData.push({ id: cardsToArr[i].id, position: cardsToArr[i].position, list_id: idListTo });
+
+      const res = await BoardService.moveCard(newData, `${idBoardTo}`);
+      if (res.data.result === 'Updated') {
+        await this.getBoards();
       }
-      newData.push({ id: idMoveCard, position: cardPos, list_id: idListTo });
-      await BoardService.moveCard(newData, `${idBoardTo}`);
-      // this.getLists(`${idBoardTo}`);
     } catch (e) {
       this.setError(e);
     } finally {

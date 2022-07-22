@@ -1,10 +1,11 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
+import React, { useContext } from 'react';
 import cn from 'classnames';
 import { motion } from 'framer-motion';
 import { IList } from '../../interfaces/ILists';
 import styles from './Lists.module.css';
 import ListItem from '../ListItem/ListItem';
+import GetListContext from '../../context/GetListContext';
 
 export interface Props {
   lists: IList[];
@@ -23,7 +24,8 @@ const li = {
   hidden: { opacity: 0 },
   show: { opacity: 1 },
 };
-function Lists({ lists }: Props): JSX.Element {
+function Lists(): JSX.Element {
+  const { lists } = useContext(GetListContext);
   if (lists.length === 0) {
     return <h2>Any lists yet</h2>;
   }
@@ -32,7 +34,7 @@ function Lists({ lists }: Props): JSX.Element {
     <motion.ul className={styles.lists} variants={ul} initial="hidden" animate="show">
       {lists.map((item) => (
         <motion.li className={cn('card', styles.listItem)} key={item.id} variants={li}>
-          <ListItem item={item} lists={lists} />
+          <ListItem item={item} />
         </motion.li>
       ))}
     </motion.ul>

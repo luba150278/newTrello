@@ -1,8 +1,15 @@
 import React from 'react';
+import { IList } from '../interfaces/ILists';
 
-const GetListContext = React.createContext({
+interface Props {
+  id: string;
+  getLists: () => Promise<void>;
+  lists: IList[];
+}
+const GetListContext = React.createContext<Props>({
   id: '',
-  getLists: () => {},
+  getLists: async (): Promise<void> => {},
+  lists: [],
 });
 export const GLContextProvider = GetListContext.Provider;
 export default GetListContext;
