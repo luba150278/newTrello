@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useContext, useState } from 'react';
 import { RiAddCircleLine } from 'react-icons/ri';
 import { CgMoreAlt } from 'react-icons/cg';

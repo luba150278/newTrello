@@ -2,7 +2,6 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
-// import Context from '../../context/Context';
 import { IInput } from '../../interfaces/IInput';
 import './InputBlock.css';
 
@@ -10,7 +9,6 @@ type Props = {
   inputData: IInput;
 };
 function InputBlock({ inputData }: Props): JSX.Element {
-  // const { store } = useContext(Context);
   return (
     <div className={inputData.cln}>
       <InputGroup>

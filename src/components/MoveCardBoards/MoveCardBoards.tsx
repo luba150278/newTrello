@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable react/jsx-no-useless-fragment */
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react';

@@ -1,10 +1,7 @@
-/* eslint-disable no-console */
 import { AxiosResponse } from 'axios';
-// import api from '../api/request';
 import config from '../common/constans/api';
 import { IBoards } from '../interfaces/IBoards';
 import { IBoardResponse } from '../interfaces/IBoardResponse';
-// import { IBoardResponse } from '../interfaces/IBoardResponse';
 import { ILoginResponse } from '../interfaces/ILoginResponse';
 import { ILists } from '../interfaces/ILists';
 import $api from '../http';

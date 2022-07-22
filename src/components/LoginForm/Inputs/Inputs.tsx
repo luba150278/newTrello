@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-/* eslint-disable no-console */
+
 import React, { useContext, useState } from 'react';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import { Form, InputGroup, OverlayTrigger } from 'react-bootstrap';
@@ -13,6 +13,7 @@ import Icon from '../../Icon/Icon';
 import styles from './Inputs.module.css';
 import Context from '../../../context/Context';
 import IconWrap from '../../IconWrap/IconWrap';
+import { PASSWORD_SETTING } from '../../../common/constans/messages';
 
 interface IProps {
   isReg: boolean;
@@ -28,7 +29,7 @@ function Inputs({ isReg }: IProps): JSX.Element {
     if (comparePass) return 'iconDone';
     return 'iconError';
   }
-  console.log(findClass());
+
   return (
     <div className={styles.inputsGroup}>
       <InputGroup>
@@ -42,13 +43,7 @@ function Inputs({ isReg }: IProps): JSX.Element {
         />
       </InputGroup>
       <div className={styles.wrapPass}>
-        <OverlayTrigger
-          placement="bottom"
-          delay={{ show: 250, hide: 400 }}
-          overlay={RenderToolTip(
-            'Your password should have at least one number, one uppercase letter, one lowercase letter, and one special symbol.'
-          )}
-        >
+        <OverlayTrigger placement="bottom" delay={{ show: 250, hide: 400 }} overlay={RenderToolTip(PASSWORD_SETTING)}>
           <InputGroup>
             <Form.Control
               type={isShowPass ? 'text' : 'password'}
@@ -79,7 +74,7 @@ function Inputs({ isReg }: IProps): JSX.Element {
                 }
               }}
               type={isShowPass ? 'text' : 'password'}
-              placeholder="Repaet password"
+              placeholder="Repeat password"
             />
           </InputGroup>
           {visibleIconCopare ? (

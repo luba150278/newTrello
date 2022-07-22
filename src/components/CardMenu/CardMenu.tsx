@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable react/no-array-index-key */
 import { motion } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
@@ -6,7 +5,6 @@ import React, { useContext, useState } from 'react';
 import { BsCardText } from 'react-icons/bs';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { FiCopy } from 'react-icons/fi';
-// import { TbUsers } from 'react-icons/tb';
 import { VscMove } from 'react-icons/vsc';
 import { div, listItem } from '../../common/constans/motionList';
 import { CardMoveProvider } from '../../context/CardMoveContext';
@@ -15,7 +13,6 @@ import GetListContext from '../../context/GetListContext';
 import ListMenuContext from '../../context/ListMenuContext';
 import { ICard } from '../../interfaces/ICard';
 import { IconWrapProps } from '../../interfaces/IconWrapProps';
-// import Icon from '../Icon/Icon';
 import IconWrap from '../IconWrap/IconWrap';
 import CardMoveWrap from '../Modal/CardMoveWrap/CardMoveWrap';
 import styles from './CardMenu.module.css';

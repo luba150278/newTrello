@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { motion } from 'framer-motion';
 import React, { useContext } from 'react';
 import cn from 'classnames';

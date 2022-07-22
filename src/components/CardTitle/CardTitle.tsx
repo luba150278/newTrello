@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable react/require-default-props */
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useRef, useState } from 'react';

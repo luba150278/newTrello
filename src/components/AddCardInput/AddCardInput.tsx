@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState } from 'react';
 import { IAddInput } from '../../interfaces/IAddInput';
 import { IInput } from '../../interfaces/IInput';

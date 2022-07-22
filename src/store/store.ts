@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { AxiosResponse } from 'axios';
 import { makeAutoObservable } from 'mobx';
 import {
@@ -18,7 +17,6 @@ import getSuccessNotify from '../functions/sucessNotify';
 import { isValidTitle } from '../functions/validTitles';
 import { IBoard } from '../interfaces/IBoard';
 import { ICard } from '../interfaces/ICard';
-// import { ICard } from '../interfaces/ICard';
 import { ICardMove } from '../interfaces/ICardMove';
 import { IList, ILists } from '../interfaces/ILists';
 import { ILoginResponse } from '../interfaces/ILoginResponse';

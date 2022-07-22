@@ -15,3 +15,5 @@ export const SUCCESS_CARD_DELETE = 'The card was deleted!';
 export const EDIT_BOARD = 'The board was updated!';
 export const EDIT_LIST = 'The list was updated!';
 export const EDIT_CARD = 'The card was updated!';
+export const PASSWORD_SETTING =
+  'Your password should have at least one number, one uppercase letter, one lowercase letter, and one special symbol.';

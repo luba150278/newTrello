@@ -34,7 +34,7 @@ function CardItem(props: CardItemProps): JSX.Element {
     <div className={styles.cardWrap}>
       <CardTitle card={card} />
       <IconWrap {...iconWrapProps} />
-      {card.description !== '' ? <p>'xxx'</p> : null}
+      {card.description !== '' ? <p>{card.description}</p> : null}
       {showMenu && !closeMenu ? <CardMenu card={card} idList={idList} /> : null}
     </div>
   );
